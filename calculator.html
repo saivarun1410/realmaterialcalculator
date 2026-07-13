@@ -250,17 +250,12 @@
     </div>
   </div>
 
-  <!-- contextual monetization CTA — swaps by bag vs ready-mix -->
+  <!-- Promotional CTA temporarily disabled.
   <div class="slot cta" id="cta" style="display:none">
     <div><div class="t" id="ctaT"></div><div class="s" id="ctaS"></div></div>
     <a href="#" id="ctaA" rel="nofollow sponsored">Get started</a>
   </div>
-  <!-- MONETIZATION NOTE:
-       When result is READY-MIX territory (>~1 cu yd) → high-value LEAD-GEN CTA:
-         "Get quotes from local concrete pros" → your Modernize/Angi/Networx affiliate link.
-       When result is BAG territory → AFFILIATE CTA:
-         "Shop concrete mix" → Home Depot (Impact) / Lowe's (CJ) / Amazon Associates link.
-       Both are the real revenue on this page. Keep rel="nofollow sponsored". -->
+  -->
 
   <!-- in-content ad slot: highest-value placement, right after the tool -->
   <div class="slot"><span class="tag">◻ Ad slot — in-content (paste AdSense unit here)</span></div>
@@ -410,7 +405,8 @@
     if(!(cf>0)){
       $("cy").textContent="—"; $("subvols").textContent="enter dimensions above";
       ["b80","b60","b40"].forEach(id=>$(id).textContent="—");
-      $("costamt").textContent="—"; $("ordernote").style.display="none"; $("cta").style.display="none";
+      $("costamt").textContent="—"; $("ordernote").style.display="none";
+      // Promotional CTA temporarily disabled: $("cta").style.display="none";
       return;
     }
     const cy = cf/27, cm = cf*0.0283168;
@@ -435,7 +431,7 @@
     if(readymix){ $("costlabel").textContent="Est. ready-mix cost"; $("costamt").textContent="$"+Math.round(cy*pyd).toLocaleString(); }
     else { $("costlabel").textContent="Est. bag cost (80 lb)"; $("costamt").textContent="$"+Math.round(b80*pbag).toLocaleString(); }
 
-    // contextual monetization CTA
+    /* Promotional CTA temporarily disabled.
     const cta=$("cta");
     cta.style.display="flex";
     if(readymix){
@@ -449,6 +445,7 @@
       $("ctaS").textContent="Check current prices at Home Depot, Lowe's & Amazon. [affiliate link]";
       $("ctaA").textContent="Compare prices";
     }
+    */
   }
 
   // shape tabs
