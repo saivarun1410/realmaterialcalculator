@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../consts.js';
+---
+<Base
+  title={`Disclaimer — ${SITE_CONFIG.SITE_NAME}`}
+  description={`Important limitations of ${SITE_CONFIG.SITE_NAME} estimates, cost figures, advertising, and affiliate links.`}
+  canonical={`${SITE_CONFIG.SITE_URL}/disclaimer`}
+  active="disclaimer"
+>
+  <article class="prose">
+    <h1>Disclaimer</h1>
+    <p class="meta"><strong>Last updated:</strong> {SITE_CONFIG.LAST_UPDATED}</p>
+
+    <h2>Planning estimates, not professional advice</h2>
+
+    <p>The calculators and content on {SITE_CONFIG.SITE_NAME} provide general estimates for planning and informational purposes only. They are not professional engineering, architectural, construction, surveying, or financial advice. No result creates a professional-client relationship or guarantees that a quantity is appropriate for a particular project.</p>
+
+    <p>Verify measurements, quantities, product specifications, waste allowances, and prices with your supplier before ordering. Follow manufacturer instructions, permit requirements, and applicable local building codes. Consult a qualified engineer, architect, contractor, or other appropriate professional for structural work, safety-critical work, regulated work, or any project for which an incorrect estimate could cause injury or property damage.</p>
+
+    <h2>Accuracy and real-world variation</h2>
+
+    <p>Estimates are based on standard geometric formulas, typical material properties, common bag yields, and industry-standard density or coverage assumptions. Actual requirements can vary because of site measurements, uneven excavation, material gradation, moisture, compaction, settling, spillage, installation method, product formulation, and other real-world conditions.</p>
+
+    <p>Prices vary by supplier, location, order size, delivery distance, taxes, season, and market conditions. Any cost figures shown are approximate ranges for general comparison, not quotes or promises of an available price. {SITE_CONFIG.SITE_NAME} makes no warranty that a calculator result or cost figure will be complete, current, or suitable for your project.</p>
+
+    <h2>FTC affiliate disclosure</h2>
+
+    <p>Some links on this site are affiliate links. The site may earn a commission from qualifying purchases made after a visitor follows one of those links, at no additional cost to the visitor. Affiliate relationships may include Amazon Associates, Home Depot, Lowe's, and other retailers or networks.</p>
+
+    <p><strong>As an Amazon Associate, {SITE_CONFIG.OWNER_NAME} earns from qualifying purchases.</strong></p>
+
+    <p>Retailers control their own product descriptions, prices, availability, warranties, and order fulfillment. An affiliate link or product reference does not constitute a professional recommendation or guarantee.</p>
+
+    <h2>Advertising disclosure</h2>
+
+    <p>{SITE_CONFIG.SITE_NAME} displays third-party advertisements, including ads that may be selected based on page content or a visitor's advertising preferences. Advertisers and ad networks are responsible for their own claims, products, services, and privacy practices. Advertising helps support the operation of this independent site.</p>
+
+    <h2>Questions</h2>
+
+    <p>Questions about this disclaimer may be sent to <a href={`mailto:${SITE_CONFIG.CONTACT_EMAIL}`}>{SITE_CONFIG.CONTACT_EMAIL}</a>.</p>
+  </article>
+</Base>

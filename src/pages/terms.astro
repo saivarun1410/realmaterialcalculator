@@ -1,0 +1,67 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../consts.js';
+---
+<Base
+  title={`Terms of Use — ${SITE_CONFIG.SITE_NAME}`}
+  description={`Terms governing use of ${SITE_CONFIG.SITE_NAME} and its free informational material estimates.`}
+  canonical={`${SITE_CONFIG.SITE_URL}/terms`}
+  active="terms"
+>
+  <article class="prose">
+    <h1>Terms of Use</h1>
+    <p class="meta"><strong>Last updated:</strong> {SITE_CONFIG.LAST_UPDATED}</p>
+
+    <p>These Terms of Use govern your access to and use of {SITE_CONFIG.SITE_URL} and the calculators, articles, and other content made available through {SITE_CONFIG.SITE_NAME}. By using the site, you agree to these terms. If you do not agree, do not use the site.</p>
+
+    <h2>Informational estimates only</h2>
+
+    <p>{SITE_CONFIG.SITE_NAME} provides free material and cost estimates for general informational and planning purposes only. Results are not professional engineering, architectural, construction, surveying, or financial advice. They do not replace project drawings, site measurements, product instructions, local code requirements, supplier recommendations, or advice from a qualified professional.</p>
+
+    <p>You are responsible for checking all dimensions, units, quantities, waste allowances, material specifications, prices, and suitability before purchasing materials or beginning work. Always confirm quantities and current prices with your supplier. Structural, safety-critical, regulated, or unfamiliar work should be reviewed by a properly qualified professional.</p>
+
+    <h2>No warranty</h2>
+
+    <p>The site and its content are provided "as is" and "as available." To the fullest extent permitted by applicable law, {SITE_CONFIG.OWNER_NAME} disclaims all warranties, express or implied, including warranties of accuracy, completeness, reliability, availability, merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that an estimate will match actual material use, supplier quantities, installed conditions, project costs, or local requirements.</p>
+
+    <h2>Limitation of liability</h2>
+
+    <p>To the fullest extent permitted by applicable law, {SITE_CONFIG.OWNER_NAME} will not be liable for any direct, indirect, incidental, consequential, special, exemplary, or punitive loss arising from or related to use of the site or reliance on an estimate or cost figure. This includes, without limitation, excess or insufficient materials, delays, labor costs, lost profits, property damage, project changes, or decisions made using site content.</p>
+
+    <p>Some jurisdictions do not allow certain warranty exclusions or liability limitations. In those jurisdictions, these provisions apply only to the maximum extent permitted by law.</p>
+
+    <h2>Acceptable use</h2>
+
+    <p>You may use the site for lawful personal and business planning. You may not:</p>
+
+    <ul>
+      <li>interfere with the site's operation, security, or availability;</li>
+      <li>attempt to gain unauthorized access to the site or related systems;</li>
+      <li>introduce malware, submit deceptive data, or use the site to harm others;</li>
+      <li>use automated scraping, harvesting, or high-volume requests that burden the site or reproduce a substantial part of its content without permission; or</li>
+      <li>misrepresent calculator results as a certified professional opinion.</li>
+    </ul>
+
+    <p>Normal crawling by public search engines for indexing is permitted.</p>
+
+    <h2>Intellectual property</h2>
+
+    <p>Unless otherwise identified, the site's calculators, written content, visual design, branding, and original code are owned by {SITE_CONFIG.OWNER_NAME} and are protected by applicable intellectual-property laws. You may use individual estimates for your own projects and may link to public pages. You may not copy, republish, sell, or create a competing database from substantial portions of the site without written permission.</p>
+
+    <h2>Affiliate links, advertising, and third parties</h2>
+
+    <p>The site may display third-party advertising and may contain affiliate links to Amazon, Home Depot, Lowe's, and other retailers. We may earn revenue from ads or a commission from qualifying purchases. A link, advertisement, product mention, or retailer listing is not an endorsement, warranty, or guarantee. Third-party sites have their own terms, prices, availability, policies, and privacy practices, and you use them at your own risk.</p>
+
+    <h2>Changes to the site or these terms</h2>
+
+    <p>We may update the site, suspend a feature, or revise these terms from time to time. Updated terms take effect when posted, and the date at the top identifies the latest revision. Continued use of the site after an update means you accept the revised terms.</p>
+
+    <h2>Governing law</h2>
+
+    <p>These terms are governed by the laws of {SITE_CONFIG.GOVERNING_LAW}, without regard to conflict-of-law principles, except where applicable consumer law requires otherwise.</p>
+
+    <h2>Contact</h2>
+
+    <p>Questions about these terms may be sent to <a href={`mailto:${SITE_CONFIG.CONTACT_EMAIL}`}>{SITE_CONFIG.CONTACT_EMAIL}</a>.</p>
+  </article>
+</Base>

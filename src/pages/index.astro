@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_NAME } from '../consts.js';
+
+const title = `${SITE_NAME} — Free Construction & Landscaping Material Calculators`;
+const description = 'Free, no-nonsense material calculators for concrete, gravel, and mulch. Enter your dimensions and get cubic yards, bags, tons, and a cost estimate in seconds — with a waste allowance built in.';
+
+const cards = [
+  {
+    href: '/concrete-calculator',
+    tag: 'Concrete',
+    title: 'Concrete Calculator',
+    desc: 'Cubic yards, 40/60/80 lb bag counts, and a cost estimate for slabs, footings, columns, tube forms, and steps.',
+  },
+  {
+    href: '/gravel-calculator',
+    tag: 'Gravel',
+    title: 'Gravel Calculator',
+    desc: 'Cubic yards, weight in tons, and cost for driveways, paver base, crushed stone, pea gravel, and sand.',
+  },
+  {
+    href: '/mulch-calculator',
+    tag: 'Mulch',
+    title: 'Mulch Calculator',
+    desc: 'Cubic yards, bag and pallet counts, and cost for flower beds and landscaping — with bulk-vs-bag guidance.',
+  },
+];
+---
+<Base title={title} description={description}>
+  <section class="hero">
+    <p class="eyebrow">Materials takeoff, without the guesswork</p>
+    <h1>Estimate exactly what your project needs.</h1>
+    <p class="lede">{SITE_NAME} gives you fast, honest material estimates — cubic yards, bags, tons, and cost — with a waste allowance built in. Pick a calculator to get started.</p>
+  </section>
+
+  <section class="grid" aria-label="Calculators">
+    {cards.map((c) => (
+      <a class="card" href={c.href}>
+        <span class="card-tag">{c.tag}</span>
+        <span class="card-title">{c.title}</span>
+        <span class="card-desc">{c.desc}</span>
+        <span class="card-cta">Open calculator →</span>
+      </a>
+    ))}
+  </section>
+</Base>
+
+<style>
+  .hero { padding: 20px 0 6px; max-width: 60ch }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--hivis);
+    margin: 0 0 8px;
+  }
+  .hero h1 { font-size: 34px; margin: 0 0 .3em }
+  .hero .lede { font-size: 17px; color: var(--ink-2); margin: 0 }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 28px 0 8px;
+  }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr } }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    padding: 18px 20px;
+    text-decoration: none;
+    box-shadow: 0 1px 0 rgba(20, 39, 63, .04), 0 12px 30px -20px rgba(20, 39, 63, .25);
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .card:hover { border-color: var(--hivis); transform: translateY(-2px) }
+  .card-tag {
+    align-self: flex-start;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--hivis);
+    border-radius: 5px;
+    padding: 3px 8px;
+    margin-bottom: 12px;
+  }
+  .card-title { font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -.01em }
+  .card-desc { font-size: 14px; color: var(--ink-2); margin-top: 6px; flex: 1 }
+  .card-cta { font-size: 13.5px; font-weight: 700; color: var(--hivis); margin-top: 14px }
+</style>

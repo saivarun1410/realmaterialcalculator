@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../consts.js';
+---
+<Base
+  title={`About — ${SITE_CONFIG.SITE_NAME}`}
+  description={`Learn how ${SITE_CONFIG.SITE_NAME} creates fast, practical material estimates for concrete, gravel, mulch, and more.`}
+  canonical={`${SITE_CONFIG.SITE_URL}/about`}
+  active="about"
+>
+  <article class="prose">
+    <h1>About {SITE_CONFIG.SITE_NAME}</h1>
+
+    <p>{SITE_CONFIG.SITE_NAME} is a collection of free material-estimation calculators for building, landscaping, and home-improvement projects. Our current tools estimate concrete, gravel, and mulch requirements, with calculators for more common materials planned as the site grows.</p>
+
+    <p>The calculators are designed for DIYers planning a weekend project, homeowners comparing options, and contractors who need a quick quantity check. The mission is simple: provide fast, accurate, no-nonsense estimates without requiring an account or making users work through unnecessary steps.</p>
+
+    <h2>How the estimates are produced</h2>
+
+    <p>Each calculator starts with standard engineering and geometric formulas. Dimensions are converted into volume, then industry-standard material densities, coverage rates, compaction allowances, or bag yields are applied as appropriate. For example, concrete volume can be translated into cubic yards and common bag sizes, while aggregate volume can be converted into an estimated weight using a typical bulk density.</p>
+
+    <p>Material properties vary by product, moisture level, gradation, installation method, and region. For that reason, the calculators clearly separate calculated quantities from practical allowances and explain the assumptions behind each result. Figures, formulas, typical densities, and bag yields are reviewed and updated over time as better source information becomes available.</p>
+
+    <h2>An independent, growing project</h2>
+
+    <p>{SITE_CONFIG.SITE_NAME} is an independent informational project. It is not a material manufacturer, retailer, engineering firm, or construction company. Advertising and affiliate relationships help support the cost of maintaining and expanding the calculators, but they do not change the formulas used to produce estimates.</p>
+
+    <p>Found an unclear instruction, an incorrect figure, or a calculator you would like us to build? Please <a href="/contact">contact us</a>. Practical feedback is one of the ways the site improves.</p>
+  </article>
+</Base>

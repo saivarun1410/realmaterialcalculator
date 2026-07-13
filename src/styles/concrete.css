@@ -1,0 +1,132 @@
+/* ============================================================
+   Concrete calculator styling — unique to the Concrete page.
+   This calculator is a different implementation from the gravel/
+   mulch "standard" one and redefines several classes (.calc, .slot,
+   .note, table, details, .example) differently, so it is kept OUT
+   of the shared stylesheets to avoid collisions. Loaded only on the
+   concrete page. Shell + tokens come from global.css.
+   ============================================================ */
+
+h2 { font-size: 22px; margin: 2em 0 .5em; padding-top: .4em }
+h3 { font-size: 16px; margin: 1.4em 0 .3em }
+p { margin: .6em 0 }
+
+.crumb { font-size: 12.5px; color: var(--ink-3); margin: 16px 0 4px; font-family: var(--mono) }
+.crumb a { color: var(--ink-3); text-decoration: none }
+.lede { font-size: 16px; color: var(--ink-2); max-width: 60ch }
+
+/* ---------- calculator card (signature) ---------- */
+.calc {
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: 14px; margin: 18px 0 8px; overflow: hidden;
+  box-shadow: 0 1px 0 rgba(20, 39, 63, .04), 0 12px 30px -18px rgba(20, 39, 63, .25);
+}
+.calc-grid { display: grid; grid-template-columns: 1fr 320px }
+.calc-in { padding: 18px 20px }
+.calc-out {
+  background:
+    linear-gradient(0deg, rgba(30, 90, 168, .05), rgba(30, 90, 168, .05)),
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(30, 90, 168, .09) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, rgba(30, 90, 168, .09) 23px 24px),
+    var(--surface);
+  border-left: 1px solid var(--line); padding: 18px 20px;
+}
+.worksheet-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .14em; color: var(--blue); text-transform: uppercase }
+
+.shapes { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 16px }
+.shape {
+  border: 1px solid var(--line-2); background: #fff; color: var(--ink-2); border-radius: 8px; padding: 7px 11px; font-size: 13px;
+  font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+}
+.shape:hover { border-color: var(--ink-3) }
+.shape.on { background: var(--ink); color: #fff; border-color: var(--ink) }
+.shape svg { width: 15px; height: 15px }
+
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px }
+.field { display: flex; flex-direction: column; gap: 4px }
+.field.full { grid-column: 1/-1 }
+.field label { font-size: 12.5px; font-weight: 600; color: var(--ink-2) }
+.inp { display: flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden; background: #fff }
+.inp:focus-within { border-color: var(--hivis); box-shadow: 0 0 0 3px var(--hivis-soft) }
+.inp input { border: 0; outline: 0; padding: 9px 10px; font-size: 15px; font-family: var(--mono); width: 100%; color: var(--ink); background: transparent }
+.inp select { border: 0; outline: 0; border-left: 1px solid var(--line); background: #F8F9FB; padding: 0 6px; font-size: 12.5px; color: var(--ink-2); cursor: pointer }
+.field.qty .inp { max-width: none }
+
+.waste { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line-2); flex-wrap: wrap; gap: 8px }
+.waste label { font-size: 12.5px; font-weight: 600; color: var(--ink-2) }
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 8px; overflow: hidden }
+.seg button { border: 0; background: #fff; padding: 6px 11px; font-size: 12.5px; font-family: var(--mono); cursor: pointer; color: var(--ink-2); border-left: 1px solid var(--line) }
+.seg button:first-child { border-left: 0 }
+.seg button.on { background: var(--blue); color: #fff }
+
+/* output */
+.result-lead { font-size: 12px; color: var(--ink-2); font-family: var(--mono); letter-spacing: .03em }
+.big { font-family: var(--mono); font-weight: 700; font-size: 40px; line-height: 1; color: var(--hivis); margin: 4px 0 2px; letter-spacing: -.02em }
+.big small { font-size: 16px; color: var(--ink); font-weight: 700 }
+.sub-vols { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); margin-bottom: 12px }
+.order-note { font-size: 12.5px; background: var(--blue-soft); border: 1px solid #CFE0F3; border-radius: 8px; padding: 8px 10px; color: var(--ink); margin-bottom: 12px }
+.bags { border-top: 1px solid var(--line); padding-top: 10px }
+.bags-title { font-size: 11px; font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px }
+.bagrow { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; padding: 3px 0 }
+.bagrow .n { font-family: var(--mono); font-weight: 700; font-size: 15px }
+.bagrow.rec { color: var(--ok); font-weight: 700 }
+.cost { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 10px; font-size: 13px }
+.cost .amt { font-family: var(--mono); font-weight: 700; font-size: 16px }
+.costcfg { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap }
+.costcfg .mini { display: flex; flex-direction: column; gap: 2px }
+.costcfg label { font-size: 10.5px; color: var(--ink-3); font-family: var(--mono) }
+.costcfg .inp { max-width: 118px }
+.costcfg .inp input { padding: 5px 7px; font-size: 12.5px }
+
+/* monetization slots — clearly marked placeholders */
+.slot { border: 1.5px dashed var(--line-2); border-radius: 10px; padding: 12px; margin: 18px 0; text-align: center; color: var(--ink-3); background: repeating-linear-gradient(135deg, #fff 0 10px, #FAFBFC 10px 20px) }
+.slot .tag { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3) }
+.slot.cta { border-style: solid; border-color: var(--hivis); background: var(--hivis-soft); text-align: left; display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap }
+.slot.cta .t { font-weight: 700; color: var(--ink) }
+.slot.cta .s { font-size: 13px; color: var(--ink-2) }
+.slot.cta a { background: var(--hivis); color: #fff; text-decoration: none; font-weight: 700; padding: 9px 15px; border-radius: 8px; font-size: 13.5px; white-space: nowrap }
+.slot.affiliate { border-color: var(--blue); background: var(--blue-soft) }
+.slot.affiliate a { background: var(--blue) }
+
+/* content */
+main p, main li { color: #26374C }
+.note { background: #FFF8F1; border-left: 3px solid var(--hivis); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14.5px }
+.example { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 14px 0 }
+.example .step { font-family: var(--mono); font-size: 13.5px; color: var(--ink-2); padding: 2px 0 }
+.example .step b { color: var(--ink) }
+.example .tot { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font-family: var(--mono); font-weight: 700; color: var(--hivis) }
+
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px }
+th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: center }
+th { background: #F0F2F5; font-weight: 700; font-size: 12.5px }
+td:first-child, th:first-child { text-align: left }
+td.mono { font-family: var(--mono) }
+
+details { border-bottom: 1px solid var(--line); padding: 2px 0 }
+summary { cursor: pointer; padding: 11px 2px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center }
+summary::-webkit-details-marker { display: none }
+summary::after { content: "+"; color: var(--hivis); font-family: var(--mono); font-size: 18px }
+details[open] summary::after { content: "–" }
+details p { margin: 0 2px 12px; color: #26374C; font-size: 14.5px }
+
+.related { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0 }
+.related a { display: block; border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; text-decoration: none; background: #fff }
+.related a:hover { border-color: var(--hivis) }
+.related .rt { font-weight: 700; color: var(--ink); font-size: 14px }
+.related .rd { font-size: 12.5px; color: var(--ink-3) }
+
+.byline { display: flex; gap: 10px; align-items: center; font-size: 12.5px; color: var(--ink-3); margin: 18px 0; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-family: var(--mono) }
+.byline .rev { color: var(--ok) }
+.disclaimer { font-size: 12px; color: var(--ink-3); margin-top: 18px }
+
+aside .sticky { position: sticky; top: 18px }
+aside h4 { font-size: 11px; font-family: var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px }
+
+@media (max-width: 900px) {
+  .calc-grid { grid-template-columns: 1fr }
+  .calc-out { border-left: 0; border-top: 1px solid var(--line) }
+}
+@media (max-width: 520px) {
+  h1 { font-size: 25px }
+  .fields { grid-template-columns: 1fr }
+  .related { grid-template-columns: 1fr }
+}

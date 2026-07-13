@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concrete Calculator — How Much Concrete Do I Need? (Bags & Yards)</title>
+<!-- META DESCRIPTION (paste into your framework's head):
+     Free concrete calculator: enter your slab, footing, column, or steps and get cubic yards,
+     bags (40/60/80 lb), and a cost estimate — with a 10% waste allowance built in. -->
+<meta name="description" content="Free concrete calculator: get cubic yards, bags (40/60/80 lb) and a cost estimate for slabs, footings, columns and steps, with a waste allowance built in.">
+
+<!-- FAQ STRUCTURED DATA (real SEO win most filler sites skip — must mirror the visible FAQ below) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"How many 80 lb bags of concrete are in a cubic yard?","acceptedAnswer":{"@type":"Answer","text":"45 bags. An 80 lb bag yields about 0.6 cubic feet, and a cubic yard is 27 cubic feet, so 27 ÷ 0.6 = 45. It takes 60 sixty-pound bags or 90 forty-pound bags to fill the same cubic yard."}},
+    {"@type":"Question","name":"How much concrete do I need for a 10x10 slab at 4 inches thick?","acceptedAnswer":{"@type":"Answer","text":"About 1.23 cubic yards (100 sq ft × 0.333 ft = 33.3 cubic feet ÷ 27). Add 10% for waste and order roughly 1.36 cubic yards. At this size, ready-mix is cheaper and faster than bags."}},
+    {"@type":"Question","name":"Should I use bags or ready-mix concrete?","acceptedAnswer":{"@type":"Answer","text":"Under about 1 cubic yard (roughly 40–60 eighty-pound bags), bags are practical. Above that, ready-mix delivery is usually cheaper and far less labor, though loads under 1 cubic yard often carry a short-load fee."}},
+    {"@type":"Question","name":"How thick should a concrete slab be?","acceptedAnswer":{"@type":"Answer","text":"4 inches is standard for patios, walkways and shed floors. Use 5–6 inches for driveways or anything carrying vehicle weight."}},
+    {"@type":"Question","name":"How much extra concrete should I order for waste?","acceptedAnswer":{"@type":"Answer","text":"Add 5–10%. Spillage, an uneven subgrade, and slight over-digging all consume more concrete than the exact geometric volume. This calculator defaults to 10%."}}
+  ]
+}
+</script>
+<style>
+  :root{
+    --paper:#F5F6F8;
+    --surface:#FFFFFF;
+    --ink:#14273F;          /* blueprint navy */
+    --ink-2:#5A6B80;
+    --ink-3:#8794A4;
+    --line:#DCE0E7;
+    --line-2:#C7CDD6;
+    --blue:#1E5AA8;         /* blueprint blue, sparing */
+    --blue-soft:#EAF1FA;
+    --hivis:#E85D25;        /* safety orange — the one accent */
+    --hivis-soft:#FCEBE2;
+    --concrete:#AEB6C0;
+    --ok:#2E7D5B;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .page{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 300px;gap:34px}
+  main{min-width:0;padding:22px 0 60px}
+  aside{padding-top:22px}
+  a{color:var(--blue)}
+  h1,h2,h3{line-height:1.2;letter-spacing:-.015em}
+  h1{font-size:30px;margin:.2em 0 .1em}
+  h2{font-size:22px;margin:2em 0 .5em;padding-top:.4em}
+  h3{font-size:16px;margin:1.4em 0 .3em}
+  p{margin:.6em 0}
+
+  /* top strip / breadcrumb */
+  .topbar{border-bottom:1px solid var(--line);background:var(--surface)}
+  .topbar .inner{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.01em}
+  .topbar .mark{width:22px;height:22px;border-radius:5px;background:var(--hivis);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:12px;font-weight:800}
+  .topbar .name{font-size:15px}
+  .topbar .name span{color:var(--ink-3);font-weight:600}
+  .crumb{font-size:12.5px;color:var(--ink-3);margin:16px 0 4px;font-family:var(--mono)}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+  .lede{font-size:16px;color:var(--ink-2);max-width:60ch}
+
+  /* ---------- calculator card (signature) ---------- */
+  .calc{
+    background:var(--surface);border:1px solid var(--line-2);border-radius:14px;margin:18px 0 8px;overflow:hidden;
+    box-shadow:0 1px 0 rgba(20,39,63,.04),0 12px 30px -18px rgba(20,39,63,.25);
+  }
+  .calc-grid{display:grid;grid-template-columns:1fr 320px}
+  .calc-in{padding:18px 20px}
+  .calc-out{
+    background:
+      linear-gradient(0deg,rgba(30,90,168,.05),rgba(30,90,168,.05)),
+      repeating-linear-gradient(0deg,transparent 0 23px,rgba(30,90,168,.09) 23px 24px),
+      repeating-linear-gradient(90deg,transparent 0 23px,rgba(30,90,168,.09) 23px 24px),
+      var(--surface);
+    border-left:1px solid var(--line);padding:18px 20px;
+  }
+  .worksheet-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--blue);text-transform:uppercase}
+
+  .shapes{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+  .shape{
+    border:1px solid var(--line-2);background:#fff;color:var(--ink-2);border-radius:8px;padding:7px 11px;font-size:13px;
+    font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;
+  }
+  .shape:hover{border-color:var(--ink-3)}
+  .shape.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .shape svg{width:15px;height:15px}
+
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field.full{grid-column:1/-1}
+  .field label{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+  .inp{display:flex;border:1px solid var(--line-2);border-radius:8px;overflow:hidden;background:#fff}
+  .inp:focus-within{border-color:var(--hivis);box-shadow:0 0 0 3px var(--hivis-soft)}
+  .inp input{border:0;outline:0;padding:9px 10px;font-size:15px;font-family:var(--mono);width:100%;color:var(--ink);background:transparent}
+  .inp select{border:0;outline:0;border-left:1px solid var(--line);background:#F8F9FB;padding:0 6px;font-size:12.5px;color:var(--ink-2);cursor:pointer}
+  .field.qty .inp{max-width:none}
+
+  .waste{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line-2);flex-wrap:wrap;gap:8px}
+  .waste label{font-size:12.5px;font-weight:600;color:var(--ink-2)}
+  .seg{display:inline-flex;border:1px solid var(--line-2);border-radius:8px;overflow:hidden}
+  .seg button{border:0;background:#fff;padding:6px 11px;font-size:12.5px;font-family:var(--mono);cursor:pointer;color:var(--ink-2);border-left:1px solid var(--line)}
+  .seg button:first-child{border-left:0}
+  .seg button.on{background:var(--blue);color:#fff}
+
+  /* output */
+  .result-lead{font-size:12px;color:var(--ink-2);font-family:var(--mono);letter-spacing:.03em}
+  .big{font-family:var(--mono);font-weight:700;font-size:40px;line-height:1;color:var(--hivis);margin:4px 0 2px;letter-spacing:-.02em}
+  .big small{font-size:16px;color:var(--ink);font-weight:700}
+  .sub-vols{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-bottom:12px}
+  .order-note{font-size:12.5px;background:var(--blue-soft);border:1px solid #CFE0F3;border-radius:8px;padding:8px 10px;color:var(--ink);margin-bottom:12px}
+  .bags{border-top:1px solid var(--line);padding-top:10px}
+  .bags-title{font-size:11px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+  .bagrow{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;padding:3px 0}
+  .bagrow .n{font-family:var(--mono);font-weight:700;font-size:15px}
+  .bagrow.rec{color:var(--ok);font-weight:700}
+  .cost{border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-size:13px}
+  .cost .amt{font-family:var(--mono);font-weight:700;font-size:16px}
+  .costcfg{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .costcfg .mini{display:flex;flex-direction:column;gap:2px}
+  .costcfg label{font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+  .costcfg .inp{max-width:118px}
+  .costcfg .inp input{padding:5px 7px;font-size:12.5px}
+
+  /* monetization slots — clearly marked placeholders */
+  .slot{border:1.5px dashed var(--line-2);border-radius:10px;padding:12px;margin:18px 0;text-align:center;color:var(--ink-3);background:repeating-linear-gradient(135deg,#fff 0 10px,#FAFBFC 10px 20px)}
+  .slot .tag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+  .slot.cta{border-style:solid;border-color:var(--hivis);background:var(--hivis-soft);text-align:left;display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap}
+  .slot.cta .t{font-weight:700;color:var(--ink)}
+  .slot.cta .s{font-size:13px;color:var(--ink-2)}
+  .slot.cta a{background:var(--hivis);color:#fff;text-decoration:none;font-weight:700;padding:9px 15px;border-radius:8px;font-size:13.5px;white-space:nowrap}
+  .slot.affiliate{border-color:var(--blue);background:var(--blue-soft)}
+  .slot.affiliate a{background:var(--blue)}
+
+  /* content */
+  main p, main li{color:#26374C}
+  .note{background:#FFF8F1;border-left:3px solid var(--hivis);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14.5px}
+  .example{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:14px 0}
+  .example .step{font-family:var(--mono);font-size:13.5px;color:var(--ink-2);padding:2px 0}
+  .example .step b{color:var(--ink)}
+  .example .tot{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-family:var(--mono);font-weight:700;color:var(--hivis)}
+
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+  th{background:#F0F2F5;font-weight:700;font-size:12.5px}
+  td:first-child,th:first-child{text-align:left}
+  td.mono{font-family:var(--mono)}
+
+  details{border-bottom:1px solid var(--line);padding:2px 0}
+  summary{cursor:pointer;padding:11px 2px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--hivis);font-family:var(--mono);font-size:18px}
+  details[open] summary::after{content:"–"}
+  details p{margin:0 2px 12px;color:#26374C;font-size:14.5px}
+
+  .related{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+  .related a{display:block;border:1px solid var(--line);border-radius:9px;padding:11px 13px;text-decoration:none;background:#fff}
+  .related a:hover{border-color:var(--hivis)}
+  .related .rt{font-weight:700;color:var(--ink);font-size:14px}
+  .related .rd{font-size:12.5px;color:var(--ink-3)}
+
+  .byline{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--ink-3);margin:18px 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:var(--mono)}
+  .byline .rev{color:var(--ok)}
+  .disclaimer{font-size:12px;color:var(--ink-3);margin-top:18px}
+
+  aside .sticky{position:sticky;top:18px}
+  aside h4{font-size:11px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+
+  .sitefoot{border-top:1px solid var(--line);background:var(--surface);margin-top:20px}
+  .sitefoot .inner{max-width:1120px;margin:0 auto;padding:18px 20px;font-size:13px;color:var(--ink-3);display:flex;gap:16px;flex-wrap:wrap}
+  .sitefoot a{color:var(--ink-2);text-decoration:none}
+
+  @media (max-width:900px){
+    .page{grid-template-columns:1fr}
+    aside{display:none}
+    .calc-grid{grid-template-columns:1fr}
+    .calc-out{border-left:0;border-top:1px solid var(--line)}
+  }
+  @media (max-width:520px){
+    h1{font-size:25px}
+    .fields{grid-template-columns:1fr}
+    .related{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <span class="mark">▤</span>
+  <span class="name">BuildMath <span>/ material calculators</span></span>
+</div></div>
+
+<div class="page">
+<main>
+  <div class="crumb"><a href="#">Home</a> / <a href="#">Calculators</a> / Concrete</div>
+  <h1>Concrete Calculator</h1>
+  <p class="lede">Enter your dimensions and get the concrete you need in cubic yards, the exact bag count for 40, 60, and 80 lb bags, and a cost estimate — with a waste allowance built in. Works for slabs, footings, round columns, tube forms, and poured steps.</p>
+
+  <!-- ================= CALCULATOR ================= -->
+  <div class="calc">
+    <div class="calc-grid">
+      <div class="calc-in">
+        <span class="worksheet-tag">Materials takeoff</span>
+        <div class="shapes" id="shapes">
+          <button class="shape on" data-shape="slab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="9" rx="1"/></svg>Slab</button>
+          <button class="shape" data-shape="footing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="6" width="16" height="12" rx="1"/></svg>Footing</button>
+          <button class="shape" data-shape="column"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v12a7 2.5 0 0 0 14 0V6"/></svg>Column / Tube</button>
+          <button class="shape" data-shape="circular"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="9" ry="4"/></svg>Circular slab</button>
+          <button class="shape" data-shape="stairs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h4v-4h4v-4h4V7h4"/></svg>Steps</button>
+        </div>
+
+        <div class="fields" id="fields"><!-- injected --></div>
+
+        <div class="waste">
+          <label>Waste allowance</label>
+          <div class="seg" id="waste">
+            <button data-w="0">0%</button>
+            <button data-w="0.05">5%</button>
+            <button data-w="0.10" class="on">10%</button>
+            <button data-w="0.15">15%</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-out">
+        <div class="result-lead">YOU NEED</div>
+        <div class="big" id="cy">—</div>
+        <div class="sub-vols" id="subvols">enter dimensions above</div>
+        <div class="order-note" id="ordernote" style="display:none"></div>
+
+        <div class="bags">
+          <div class="bags-title">Pre-mix bags (incl. waste)</div>
+          <div class="bagrow" data-bag="80"><span>80 lb bags</span><span class="n" id="b80">—</span></div>
+          <div class="bagrow" data-bag="60"><span>60 lb bags</span><span class="n" id="b60">—</span></div>
+          <div class="bagrow" data-bag="40"><span>40 lb bags</span><span class="n" id="b40">—</span></div>
+        </div>
+
+        <div class="cost">
+          <div style="display:flex;justify-content:space-between"><span id="costlabel">Est. cost</span><span class="amt" id="costamt">—</span></div>
+          <div class="costcfg">
+            <div class="mini"><label>$ / cu yd (ready-mix)</label><div class="inp"><input id="pyd" type="number" value="135" min="0"></div></div>
+            <div class="mini"><label>$ / 80 lb bag</label><div class="inp"><input id="pbag" type="number" value="6" min="0" step="0.5"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- contextual monetization CTA — swaps by bag vs ready-mix -->
+  <div class="slot cta" id="cta" style="display:none">
+    <div><div class="t" id="ctaT"></div><div class="s" id="ctaS"></div></div>
+    <a href="#" id="ctaA" rel="nofollow sponsored">Get started</a>
+  </div>
+  <!-- MONETIZATION NOTE:
+       When result is READY-MIX territory (>~1 cu yd) → high-value LEAD-GEN CTA:
+         "Get quotes from local concrete pros" → your Modernize/Angi/Networx affiliate link.
+       When result is BAG territory → AFFILIATE CTA:
+         "Shop concrete mix" → Home Depot (Impact) / Lowe's (CJ) / Amazon Associates link.
+       Both are the real revenue on this page. Keep rel="nofollow sponsored". -->
+
+  <!-- in-content ad slot: highest-value placement, right after the tool -->
+  <div class="slot"><span class="tag">◻ Ad slot — in-content (paste AdSense unit here)</span></div>
+
+  <h2>How to measure for concrete</h2>
+  <p>The calculator is only as accurate as your measurements, and concrete is unforgiving — you can't order "a bit more" once the truck leaves. Measure length and width in feet, and thickness in inches (most people get this wrong by mixing units). For a slab, thickness is the depth of the pour, not the depth of your excavation.</p>
+  <p>Three things quietly inflate real-world volume beyond the clean geometric number:</p>
+  <div class="note"><b>The over-dig problem.</b> If your subgrade isn't level, concrete fills every low spot. A slab formed at 4 inches can easily average 4.5–5 inches over an uneven base — that's 10–25% more concrete than the flat calculation. Compact and screed your base flat, or bump the waste allowance to 15%.</div>
+  <p>For footings and columns, measure the actual form dimensions, not the hole. For round tube forms (Sonotube), the diameter printed on the tube is the finished diameter — use that. And if you're pouring several identical footings or columns, set the <b>quantity</b> field rather than adding them up by hand.</p>
+
+  <h2>Worked example: a 10 × 12 ft patio</h2>
+  <div class="example">
+    <div class="step">Area: <b>10 ft × 12 ft = 120 sq ft</b></div>
+    <div class="step">Thickness: <b>4 in = 0.333 ft</b></div>
+    <div class="step">Volume: 120 × 0.333 = <b>40 cubic feet</b></div>
+    <div class="step">Cubic yards: 40 ÷ 27 = <b>1.48 cu yd</b></div>
+    <div class="step">+ 10% waste: <b>1.63 cu yd</b></div>
+    <div class="tot">→ Order 1.75 cu yd of ready-mix (round up to the supplier's increment)</div>
+  </div>
+  <p>At 1.6+ cubic yards this is well past bag territory — it would take about 70 eighty-pound bags, over 5,000 lb of mix to haul, open, and mix by hand. Ordering ready-mix is cheaper and saves a brutal day of labor. Which brings up the decision most guides skip:</p>
+
+  <h2>Bags vs. ready-mix: where the line actually is</h2>
+  <p>The honest threshold is about <b>1 cubic yard</b>. Below it, bags win on convenience and there's no delivery minimum to worry about. Above it, ready-mix wins on both cost and effort — but watch for the <b>short-load fee</b>: most suppliers charge a premium on deliveries under 1 cubic yard, sometimes $60–150, which can erase the savings on very small pours. So the awkward middle — roughly 0.7 to 1.5 cubic yards — is where you should price both.</p>
+  <div class="note"><b>Rule of thumb:</b> under ~40 eighty-pound bags, buy bags. Over ~60, order ready-mix. In between, get a delivery quote including any short-load fee and compare.</div>
+
+  <!-- affiliate slot in-context -->
+  <div class="slot affiliate"><span class="tag">◻ Affiliate slot — "Compare concrete mix prices" (Home Depot / Lowe's / Amazon)</span></div>
+
+  <h2>Concrete coverage chart</h2>
+  <p>How much area one bag covers depends entirely on thickness. These figures use standard bag yields (80 lb ≈ 0.60 cu ft, 60 lb ≈ 0.45 cu ft, 40 lb ≈ 0.30 cu ft):</p>
+  <table>
+    <thead><tr><th>Bag size</th><th>Yield</th><th>Coverage @ 2″</th><th>Coverage @ 4″</th><th>Coverage @ 6″</th><th>Bags per cu yd</th></tr></thead>
+    <tbody>
+      <tr><td>80 lb</td><td class="mono">0.60 cu ft</td><td class="mono">3.6 sq ft</td><td class="mono">1.8 sq ft</td><td class="mono">1.2 sq ft</td><td class="mono">45</td></tr>
+      <tr><td>60 lb</td><td class="mono">0.45 cu ft</td><td class="mono">2.7 sq ft</td><td class="mono">1.35 sq ft</td><td class="mono">0.9 sq ft</td><td class="mono">60</td></tr>
+      <tr><td>40 lb</td><td class="mono">0.30 cu ft</td><td class="mono">1.8 sq ft</td><td class="mono">0.9 sq ft</td><td class="mono">0.6 sq ft</td><td class="mono">90</td></tr>
+    </tbody>
+  </table>
+  <p>The last column is the fastest sanity check there is: it takes <b>45 eighty-pound bags to equal one cubic yard</b>. If your calculator result says 30+ bags, you're already at the point where ready-mix deserves a phone call.</p>
+
+  <h2>What concrete costs</h2>
+  <p>Two very different price structures, so estimate whichever route you're taking:</p>
+  <p><b>Ready-mix</b> runs roughly <b>$125–165 per cubic yard</b> delivered in most of the US, before add-ons. The add-ons are where budgets slip: short-load fees under 1 cu yd, an overtime/Saturday surcharge, and a waiting-time fee if your crew is slow to unload. <b>Bagged mix</b> runs about <b>$5–8 per 80 lb bag</b>, so a cubic yard's worth of bags (45 of them) lands near $225–360 — often <i>more</i> than ready-mix per yard, which is the counterintuitive reason bags only make sense on small jobs.</p>
+  <p class="note">Prices vary a lot by region and by month — the calculator's cost fields are editable, so drop in a real local quote for an accurate number.</p>
+
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many 80 lb bags of concrete are in a cubic yard?</summary><p>45 bags. An 80 lb bag yields about 0.6 cubic feet, and a cubic yard is 27 cubic feet (27 ÷ 0.6 = 45). It takes 60 sixty-pound bags or 90 forty-pound bags to fill the same cubic yard.</p></details>
+  <details><summary>How much concrete do I need for a 10×10 slab at 4 inches?</summary><p>About 1.23 cubic yards. That's 100 sq ft × 0.333 ft = 33.3 cubic feet, divided by 27. Add 10% for waste and order roughly 1.36 cubic yards. At this size ready-mix beats bags on both cost and labor.</p></details>
+  <details><summary>Should I use bags or ready-mix?</summary><p>Under about 1 cubic yard (roughly 40–60 eighty-pound bags) bags are practical. Above that, ready-mix delivery is usually cheaper and far less work — just check for a short-load fee on deliveries under a cubic yard.</p></details>
+  <details><summary>How thick should a concrete slab be?</summary><p>4 inches is standard for patios, walkways, and shed floors. Step up to 5–6 inches for driveways or anything that carries vehicle weight, and add rebar or wire mesh for those loads.</p></details>
+  <details><summary>How much extra should I order for waste?</summary><p>Add 5–10%. Spillage, an uneven subgrade, and slight over-digging all consume more than the exact geometric volume. This calculator defaults to 10%; use 15% if your base isn't well compacted and screeded.</p></details>
+
+  <h2>Related calculators</h2>
+  <div class="related">
+    <a href="#"><div class="rt">Gravel Calculator →</div><div class="rd">Base rock and aggregate in tons or yards</div></a>
+    <a href="#"><div class="rt">Paver Calculator →</div><div class="rd">How many pavers for a patio or walkway</div></a>
+    <a href="#"><div class="rt">Rebar Calculator →</div><div class="rd">Grid spacing and total rebar length</div></a>
+    <a href="#"><div class="rt">Sonotube Calculator →</div><div class="rd">Concrete for round tube column forms</div></a>
+  </div>
+
+  <div class="byline">
+    <span>Built by the BuildMath team · <span class="rev">Reviewed for accuracy</span></span>
+    <span>Updated Jul 2026</span>
+  </div>
+  <p class="disclaimer">This calculator provides estimates for planning only. Bag yields and prices vary by manufacturer and region; always confirm order quantities with your concrete supplier and follow local building codes for structural work.</p>
+</main>
+
+<aside><div class="sticky">
+  <h4>◻ Ad slot — sidebar</h4>
+  <div class="slot" style="min-height:250px;display:flex;align-items:center;justify-content:center"><span class="tag">300 × 250</span></div>
+  <h4 style="margin-top:22px">Popular calculators</h4>
+  <div class="related" style="grid-template-columns:1fr">
+    <a href="#"><div class="rt">Gravel →</div></a>
+    <a href="#"><div class="rt">Mulch →</div></a>
+    <a href="#"><div class="rt">Topsoil →</div></a>
+  </div>
+</div></aside>
+</div>
+
+<div class="sitefoot"><div class="inner">
+  <a href="#">About</a><a href="#">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Disclaimer</a>
+  <span style="margin-left:auto;color:var(--ink-3)">© 2026 BuildMath</span>
+</div></div>
+
+<script>
+(function(){
+  "use strict";
+  const TOFT = {ft:1, in:1/12, yd:3, m:3.28084, cm:1/30.48};
+  const YIELD = {80:0.60, 60:0.45, 40:0.30};   // cubic feet per bag (standard)
+
+  // field definitions per shape
+  const SHAPES = {
+    slab:     [["len","Length","ft"],["wid","Width","ft"],["thk","Thickness","in"],["qty","Quantity (slabs)","x"]],
+    footing:  [["len","Length","ft"],["wid","Width","ft"],["dep","Depth","in"],["qty","Quantity (footings)","x"]],
+    column:   [["dia","Diameter","in"],["hgt","Height","ft"],["qty","Quantity (columns)","x"]],
+    circular: [["dia","Diameter","ft"],["thk","Thickness","in"]],
+    stairs:   [["run","Run (per step)","in"],["rise","Rise (per step)","in"],["swid","Width","ft"],["steps","Number of steps","x"]]
+  };
+  const UNITSEL = ["in","ft","yd","cm","m"];
+  const DEFAULTS = {len:10, wid:12, thk:4, dep:12, dia:12, hgt:9, qty:1, run:11, rise:7, swid:3, steps:3, circular_dia:8};
+
+  let shape = "slab";
+  let waste = 0.10;
+  const $ = id => document.getElementById(id);
+
+  function unitSelect(name, def){
+    return '<select data-unit="'+name+'">'+UNITSEL.map(u=>'<option'+(u===def?' selected':'')+'>'+u+'</option>').join('')+'</select>';
+  }
+
+  function buildFields(){
+    const defs = SHAPES[shape];
+    $("fields").innerHTML = defs.map(([name,label,unit])=>{
+      const isCount = unit==="x";
+      let dval = DEFAULTS[name] ?? 1;
+      if(shape==="circular" && name==="dia") dval = DEFAULTS.circular_dia;
+      const cls = "field"+(isCount?" qty":"")+((defs.length%2 && defs.indexOf(defs.find(d=>d[0]===name))===defs.length-1 && !isCount)?"":"");
+      return '<div class="field'+(isCount?' qty':'')+'">'+
+        '<label>'+label+'</label>'+
+        '<div class="inp"><input type="number" min="0" step="any" data-f="'+name+'" value="'+dval+'">'+
+        (isCount?'':unitSelect(name,unit))+'</div></div>';
+    }).join('');
+    $("fields").querySelectorAll('input,select').forEach(el=>el.addEventListener('input',calc));
+  }
+
+  function ft(name){
+    const inp = $("fields").querySelector('[data-f="'+name+'"]');
+    if(!inp) return 0;
+    const v = parseFloat(inp.value)||0;
+    const sel = $("fields").querySelector('[data-unit="'+name+'"]');
+    const u = sel ? sel.value : null;
+    return u ? v*TOFT[u] : v;   // count fields have no unit
+  }
+  function count(name){ const inp=$("fields").querySelector('[data-f="'+name+'"]'); return Math.max(1, Math.round(parseFloat(inp&&inp.value)||1)); }
+
+  function volumeCuFt(){
+    if(shape==="slab")    return ft("len")*ft("wid")*ft("thk")*count("qty");
+    if(shape==="footing") return ft("len")*ft("wid")*ft("dep")*count("qty");
+    if(shape==="column"){ const r=ft("dia")/2; return Math.PI*r*r*ft("hgt")*count("qty"); }
+    if(shape==="circular"){ const r=ft("dia")/2; return Math.PI*r*r*ft("thk"); }
+    if(shape==="stairs"){ const n=count("steps"); return ft("swid")*ft("run")*ft("rise")*(n*(n+1)/2); }
+    return 0;
+  }
+
+  function calc(){
+    const raw = volumeCuFt();
+    const cf = raw*(1+waste);
+    if(!(cf>0)){
+      $("cy").textContent="—"; $("subvols").textContent="enter dimensions above";
+      ["b80","b60","b40"].forEach(id=>$(id).textContent="—");
+      $("costamt").textContent="—"; $("ordernote").style.display="none"; $("cta").style.display="none";
+      return;
+    }
+    const cy = cf/27, cm = cf*0.0283168;
+    $("cy").innerHTML = cy.toFixed(2)+' <small>cu yd</small>';
+    $("subvols").textContent = cf.toFixed(1)+" cu ft  ·  "+cm.toFixed(2)+" m³  (incl. "+Math.round(waste*100)+"% waste)";
+
+    const b80=Math.ceil(cf/YIELD[80]), b60=Math.ceil(cf/YIELD[60]), b40=Math.ceil(cf/YIELD[40]);
+    $("b80").textContent=b80; $("b60").textContent=b60; $("b40").textContent=b40;
+
+    const readymix = cy >= 1;   // threshold
+    // recommendation highlight
+    document.querySelectorAll('.bagrow').forEach(r=>r.classList.remove('rec'));
+    if(!readymix) document.querySelector('.bagrow[data-bag="80"]').classList.add('rec');
+
+    // order note
+    const note=$("ordernote"); note.style.display="block";
+    if(readymix) note.innerHTML="<b>Order ready-mix.</b> At "+cy.toFixed(2)+" cu yd (~"+b80+" bags) delivery is cheaper and far less labor — ask about any short-load fee under 1 yd.";
+    else note.innerHTML="<b>Bags are fine here.</b> "+b80+" × 80 lb bags. Small enough that ready-mix delivery minimums aren't worth it.";
+
+    // cost
+    const pyd=parseFloat($("pyd").value)||0, pbag=parseFloat($("pbag").value)||0;
+    if(readymix){ $("costlabel").textContent="Est. ready-mix cost"; $("costamt").textContent="$"+Math.round(cy*pyd).toLocaleString(); }
+    else { $("costlabel").textContent="Est. bag cost (80 lb)"; $("costamt").textContent="$"+Math.round(b80*pbag).toLocaleString(); }
+
+    // contextual monetization CTA
+    const cta=$("cta");
+    cta.style.display="flex";
+    if(readymix){
+      cta.className="slot cta";
+      $("ctaT").textContent="Pouring "+cy.toFixed(1)+" cu yd? Get local pro quotes.";
+      $("ctaS").textContent="Compare concrete contractors near you — free, no obligation. [lead-gen link]";
+      $("ctaA").textContent="Get free quotes";
+    } else {
+      cta.className="slot cta affiliate";
+      $("ctaT").textContent="Need "+b80+" bags of concrete mix?";
+      $("ctaS").textContent="Check current prices at Home Depot, Lowe's & Amazon. [affiliate link]";
+      $("ctaA").textContent="Compare prices";
+    }
+  }
+
+  // shape tabs
+  $("shapes").addEventListener("click",e=>{
+    const b=e.target.closest(".shape"); if(!b) return;
+    document.querySelectorAll(".shape").forEach(s=>s.classList.remove("on"));
+    b.classList.add("on"); shape=b.dataset.shape; buildFields(); calc();
+  });
+  // waste
+  $("waste").addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    document.querySelectorAll("#waste button").forEach(x=>x.classList.remove("on"));
+    b.classList.add("on"); waste=parseFloat(b.dataset.w); calc();
+  });
+  $("pyd").addEventListener("input",calc); $("pbag").addEventListener("input",calc);
+
+  buildFields(); calc();
+})();
+</script>
+</body>
+</html>

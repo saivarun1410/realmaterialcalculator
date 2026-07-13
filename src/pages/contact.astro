@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../consts.js';
+---
+<Base
+  title={`Contact — ${SITE_CONFIG.SITE_NAME}`}
+  description={`Contact ${SITE_CONFIG.SITE_NAME} with a question, correction, privacy request, or calculator suggestion.`}
+  canonical={`${SITE_CONFIG.SITE_URL}/contact`}
+  active="contact"
+>
+  <article class="prose">
+    <h1>Contact</h1>
+
+    <p>Questions, corrections, calculator suggestions, and privacy requests are welcome. Email us at <a href={`mailto:${SITE_CONFIG.CONTACT_EMAIL}`}>{SITE_CONFIG.CONTACT_EMAIL}</a>. We aim to respond within five business days, although detailed technical questions may take longer.</p>
+
+    <p>Please do not send payment details, government identification numbers, medical information, or other sensitive personal data. For questions about a specific estimate, include the calculator you used, the dimensions and units entered, and the result you expected.</p>
+
+    <h2>Send a message</h2>
+
+    <form action={SITE_CONFIG.CONTACT_FORM_ENDPOINT} method="POST">
+      <input type="hidden" name="access_key" value={SITE_CONFIG.CONTACT_FORM_ACCESS_KEY} />
+      <input type="hidden" name="subject" value={`${SITE_CONFIG.SITE_NAME} contact form message`} />
+      <input type="hidden" name="from_name" value={`${SITE_CONFIG.SITE_NAME} Website`} />
+      <input type="hidden" name="redirect" value={SITE_CONFIG.CONTACT_FORM_SUCCESS_URL} />
+      <input class="botcheck" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
+
+      <label>
+        Name
+        <input type="text" name="name" autocomplete="name" maxlength="120" required />
+      </label>
+
+      <label>
+        Email
+        <input type="email" name="email" autocomplete="email" maxlength="254" required />
+      </label>
+
+      <label>
+        Message
+        <textarea name="message" maxlength="5000" required></textarea>
+      </label>
+
+      <button type="submit">Send message</button>
+      <p class="form-note">Submitting this form sends your name, email, and message to Web3Forms so it can deliver your enquiry to us.</p>
+    </form>
+  </article>
+</Base>

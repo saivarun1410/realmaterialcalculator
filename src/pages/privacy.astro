@@ -1,0 +1,81 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_CONFIG } from '../consts.js';
+---
+<Base
+  title={`Privacy Policy — ${SITE_CONFIG.SITE_NAME}`}
+  description={`How ${SITE_CONFIG.SITE_NAME} handles logs, cookies, analytics, advertising, affiliate links, and privacy rights.`}
+  canonical={`${SITE_CONFIG.SITE_URL}/privacy`}
+  active="privacy"
+>
+  <article class="prose">
+    <h1>Privacy Policy</h1>
+    <p class="meta"><strong>Last updated:</strong> {SITE_CONFIG.LAST_UPDATED}</p>
+
+    <p>This Privacy Policy explains how {SITE_CONFIG.SITE_NAME} ("we," "us," or "our") handles information when you visit {SITE_CONFIG.SITE_URL}. It also describes choices and rights that may be available to you.</p>
+
+    <h2>Overview</h2>
+
+    <p>Our material calculators run in your browser. You do not need to create an account, and the calculators themselves do not ask for or collect sensitive personal information. The measurements and project values you enter are used to calculate an answer on the page and are not intentionally stored by us as part of a user profile.</p>
+
+    <h2>Information collected automatically</h2>
+
+    <p>Like most websites, our hosting provider and services used on the site may automatically receive standard technical information when you visit. This can include your Internet Protocol (IP) address, browser and device type, operating system, referring page, pages viewed, approximate location derived from an IP address, and the date and time of a request.</p>
+
+    <p>This information may appear in server or access logs and may be used to operate the site, diagnose errors, protect against abuse, understand general traffic patterns, and improve our calculators. We may also use cookies or similar technologies for site functionality, analytics, advertising, fraud prevention, and remembering consent choices.</p>
+
+    <h2>Cookies and third-party advertising</h2>
+
+    <p>We may display advertising provided by Google AdSense and other third-party vendors or ad networks. Google, as a third-party vendor, uses cookies to serve ads on this site based on a user's prior visits. Google's use of advertising cookies enables Google and its partners to serve ads to users based on their visits to this site and/or other sites on the Internet.</p>
+
+    <p>You may opt out of personalized advertising through <a href="https://www.google.com/settings/ads" rel="external">Google Ads Settings</a>. You can also learn about choices offered by participating advertising companies at <a href="https://www.aboutads.info/choices/" rel="external">aboutads.info</a> and <a href="https://www.youradchoices.com/" rel="external">YourAdChoices</a>.</p>
+
+    <p>Other third-party vendors and ad networks may also use cookies, web beacons, or similar technologies when their content or ads appear on the site. Their collection and use of information are governed by their own privacy policies. You can restrict or delete cookies through your browser settings, but doing so may affect some site features.</p>
+
+    <h2>Visitors in the EEA and United Kingdom</h2>
+
+    <p>For visitors in the European Economic Area and the United Kingdom, a consent mechanism governs the use of advertising and other non-essential cookies where consent is required. You can use that mechanism to accept, reject, or manage available cookie choices. Essential technologies may still be used to provide security, remember consent selections, and operate the site.</p>
+
+    <h2>Analytics</h2>
+
+    <p>We may use Google Analytics to understand aggregated site usage, such as which pages are visited and how visitors arrive at the site. If Google Analytics is enabled, Google may receive information including your IP address, device information, referring page, and interactions with the site, and may use cookies or similar technologies to provide the service.</p>
+
+    <p>You can learn more and install the <a href="https://tools.google.com/dlpage/gaoptout" rel="external">Google Analytics Opt-out Browser Add-on</a>. Your browser and consent settings may provide additional controls.</p>
+
+    <h2>Affiliate links</h2>
+
+    <p>Some links on {SITE_CONFIG.SITE_NAME} are affiliate links, including links associated with Amazon Associates, Home Depot, and Lowe's programs. If you follow an affiliate link, the retailer or affiliate network may set its own cookie or use another identifier to attribute a qualifying purchase. We may receive a commission without increasing the price you pay. Those companies handle information under their own privacy policies.</p>
+
+    <h2>Information you choose to provide</h2>
+
+    <p>If you email us or use the contact form, we receive the information you submit, such as your name, email address, message, and any details you voluntarily include. We use it to respond, keep appropriate records, prevent abuse, and address legal or security issues. Contact-form submissions are processed by Web3Forms, which receives the submitted fields and related request metadata to deliver the message. Its handling of that information is described in the <a href="https://web3forms.com/privacy" rel="external">Web3Forms Privacy Policy</a>.</p>
+
+    <h2>Third-party links</h2>
+
+    <p>The site links to retailers, advertisers, reference sources, and other external websites. We do not control those sites and are not responsible for their content, security, or privacy practices. Review the privacy policy of any external site before providing information to it.</p>
+
+    <h2>Your privacy rights</h2>
+
+    <h3>EEA and UK visitors</h3>
+
+    <p>Depending on the circumstances and applicable law, visitors in the EEA and UK may have rights to access personal data, correct inaccurate data, request erasure, restrict or object to processing, and receive certain data in a portable format. Where processing is based on consent, you may withdraw that consent. You may also complain to your local data-protection authority.</p>
+
+    <h3>California visitors</h3>
+
+    <p>California residents may have rights to know what categories and specific pieces of personal information are collected, request deletion or correction, and receive information about how personal information is used or disclosed. We do not sell personal data for money. We also do not knowingly sell or share the personal information of consumers under 16. Advertising cookies may be treated as "sharing" for cross-context behavioral advertising under California law; where applicable, available privacy or consent controls can be used to opt out.</p>
+
+    <p>We will not discriminate against you for exercising an applicable privacy right. We may need to verify a request before completing it, and some information may be retained when permitted or required by law.</p>
+
+    <h2>Children's privacy</h2>
+
+    <p>{SITE_CONFIG.SITE_NAME} is intended for a general audience and is not directed to children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided personal information to us, contact us so we can review and delete it as appropriate under the Children's Online Privacy Protection Act (COPPA).</p>
+
+    <h2>Changes to this policy</h2>
+
+    <p>We may update this policy as the site, its services, or applicable requirements change. The date at the top of this page identifies the latest revision.</p>
+
+    <h2>Contact us about privacy</h2>
+
+    <p>To ask a privacy question or exercise an applicable privacy right, email <a href={`mailto:${SITE_CONFIG.CONTACT_EMAIL}`}>{SITE_CONFIG.CONTACT_EMAIL}</a>. Please describe your request and the jurisdiction in which you live. The site is operated by {SITE_CONFIG.OWNER_NAME}.</p>
+  </article>
+</Base>

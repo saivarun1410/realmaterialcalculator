@@ -1,0 +1,159 @@
+/* ============================================================
+   Standard calculator styling — shared by the Gravel and Mulch
+   pages (their stylesheets were identical). Loaded only on those
+   two pages. Shell + tokens come from global.css.
+   ============================================================ */
+
+h2 { font-size: 22px; margin: 2em 0 .5em }
+h3 { font-size: 16px; margin: 1.4em 0 .3em }
+
+.crumb { font-size: 12.5px; color: var(--ink-3); margin: 16px 0 2px }
+.crumb a { color: var(--ink-3); text-decoration: none }
+
+.calc {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 14px 0 6px;
+  box-shadow: 0 1px 2px rgba(20, 39, 63, .04);
+}
+.tabs { display: flex; border-bottom: 1px solid var(--line-2); background: var(--paper) }
+.tab {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 6px;
+  text-align: center;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  border-right: 1px solid var(--line);
+}
+.tab:last-child { border-right: 0 }
+.tab.on { background: var(--surface); color: var(--hivis); box-shadow: inset 0 -2px 0 var(--hivis) }
+.cbody { display: grid; grid-template-columns: 1fr 290px }
+@media (max-width: 680px) { .cbody { grid-template-columns: 1fr } }
+.inputs { padding: 20px 22px }
+.grp { display: none }
+.grp.on { display: block }
+.field { margin-bottom: 14px }
+.field label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.field input, .field select {
+  font-family: var(--mono);
+  font-size: 16px;
+  padding: 10px 11px;
+  border: 1.5px solid var(--line-2);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+  outline: none;
+}
+.field input:focus, .field select:focus { border-color: var(--hivis) }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.opts { border-top: 1px dashed var(--line-2); margin-top: 4px; padding-top: 14px }
+.hint { font-size: 12.5px; color: var(--ink-3); margin-top: 4px }
+input[type=range] { padding: 0; accent-color: var(--hivis) }
+
+.stamp {
+  background: var(--ink);
+  color: #fff;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.stamp::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: repeating-linear-gradient(45deg, var(--hivis) 0 12px, #14273F 12px 24px);
+}
+.stamp .tick { font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--hivis); font-weight: 700 }
+.stamp .big { display: flex; gap: 18px; margin: 10px 0 2px }
+.stamp .big .m { flex: 1 }
+.stamp .big .v { font-size: 34px; font-weight: 800; line-height: 1; font-family: var(--sans) }
+.stamp .big .v small { font-size: 14px; color: #9fb0c4; font-weight: 500 }
+.stamp .big .k { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #8ea0b6; margin-top: 5px }
+.stamp .sub { font-family: var(--mono); font-size: 12.5px; color: #aebccd; margin-top: 4px }
+.stamp .divider { height: 1px; background: #28374a; margin: 14px 0 }
+.stamp .costs { display: flex; gap: 16px }
+.stamp .costs .k { font-family: var(--mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: #8ea0b6 }
+.stamp .costs .v { font-family: var(--mono); font-size: 16px; font-weight: 600; margin-top: 2px }
+.stamp .rec { margin-top: 14px; font-size: 12.5px; background: #1c2f45; border-left: 3px solid var(--hivis); padding: 8px 10px; color: #dbe4ee }
+
+.slot {
+  border: 1.5px dashed var(--line-2);
+  border-radius: 8px;
+  padding: 14px;
+  text-align: center;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0;
+  background: rgba(20, 39, 63, .015);
+}
+aside .slot { min-height: 250px; display: flex; align-items: center; justify-content: center }
+aside .slot.tall { min-height: 600px; margin-top: 20px }
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: var(--blue-soft);
+  border: 1px solid #cfe0f4;
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 20px 0;
+}
+.cta.affiliate { background: var(--hivis-soft); border-color: #f6d3c2 }
+.cta .t { font-weight: 700; font-size: 16px }
+.cta .s { font-size: 13px; color: var(--ink-2); margin-top: 1px }
+.cta a {
+  background: var(--hivis);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.cta a:hover { background: var(--hivis-2) }
+
+.note { background: var(--surface); border-left: 4px solid var(--hivis); padding: 11px 15px; margin: 15px 0; font-size: 14.5px; border-radius: 0 6px 6px 0 }
+
+.example { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 16px 0; font-family: var(--mono); font-size: 14px }
+.example .step { padding: 3px 0; color: var(--ink-2) }
+.example .step b { color: var(--ink) }
+.example .tot { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); color: var(--hivis-2); font-weight: 700 }
+
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; background: var(--surface) }
+th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--line) }
+th { font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; background: var(--paper); color: var(--ink-2) }
+td { font-family: var(--mono) }
+td:first-child { font-family: var(--sans) }
+tbody tr:hover { background: var(--blue-soft) }
+
+details { border-bottom: 1px solid var(--line); padding: 12px 0 }
+summary { font-weight: 600; font-size: 16px; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center }
+summary::-webkit-details-marker { display: none }
+summary::after { content: "+"; color: var(--hivis); font-size: 20px; font-family: var(--mono) }
+details[open] summary::after { content: "–" }
+details p { font-size: 14.5px; margin: 8px 0 2px }

@@ -1,0 +1,81 @@
+---
+import { SITE_NAME } from '../consts.js';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Optional explicit canonical; defaults to the current path on the configured site. */
+  canonical?: string;
+  /** Nav/footer highlight for the current page. */
+  active?: string;
+  /** Raw JSON-LD string injected verbatim into <head> (e.g. the page's FAQPage schema). */
+  jsonLd?: string;
+}
+
+const { title, description, canonical, active, jsonLd } = Astro.props;
+
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+const hasAside = Astro.slots.has('aside');
+
+const nav = [
+  { href: '/concrete-calculator', label: 'Concrete', key: 'concrete' },
+  { href: '/gravel-calculator', label: 'Gravel', key: 'gravel' },
+  { href: '/mulch-calculator', label: 'Mulch', key: 'mulch' },
+];
+
+const trustNav = [
+  { href: '/about', label: 'About', key: 'about' },
+  { href: '/contact', label: 'Contact', key: 'contact' },
+  { href: '/privacy', label: 'Privacy Policy', key: 'privacy' },
+  { href: '/terms', label: 'Terms', key: 'terms' },
+  { href: '/disclaimer', label: 'Disclaimer', key: 'disclaimer' },
+];
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:site_name" content={SITE_NAME} />
+
+  {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <a class="brand" href="/"><span class="mark">M</span>{SITE_NAME}</a>
+  <nav>
+    {nav.map((item) => (
+      <a href={item.href} class={active === item.key ? 'on' : undefined} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>
+    ))}
+  </nav>
+</div></div>
+
+<div class:list={["page", { "no-aside": !hasAside }]}>
+  <main><slot /></main>
+  {hasAside && <slot name="aside" />}
+</div>
+
+<footer><div class="inner">
+  <nav>
+    {trustNav.map((item) => (
+      <a href={item.href} class={active === item.key ? 'on' : undefined} aria-current={active === item.key ? 'page' : undefined}>{item.label}</a>
+    ))}
+  </nav>
+  <p class="disc">{SITE_NAME} provides estimates for planning only. Material coverage and weight vary with product, gradation, moisture, settling, and compaction; confirm quantities and pricing with your supplier before ordering. Cost figures are rough regional averages that vary by season. This site may contain affiliate or sponsored links, which don't change what you pay.</p>
+  <p class="trademark">© {new Date().getFullYear()} {SITE_NAME}™. All rights reserved.</p>
+</div></footer>
+
+</body>
+</html>

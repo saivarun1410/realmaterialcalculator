@@ -1,0 +1,210 @@
+---
+import Base from '../layouts/Base.astro';
+import { PRICES_REVIEWED } from '../consts.js';
+import '../styles/standard.css';
+
+const title = 'Gravel Calculator — How Much Gravel Do I Need? (Tons & Yards)';
+const description = 'Free gravel calculator: enter your area and depth, pick your material, and get cubic yards, weight in tons, and cost. Works for driveways, paver base, crushed stone, pea gravel and sand.';
+
+const jsonLd = `{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How many tons of gravel are in a cubic yard?","acceptedAnswer":{"@type":"Answer","text":"About 1.4 tons for most crushed stone and pea gravel. Denser materials like crusher run and paver base run closer to 1.5 tons per cubic yard, while sand is around 1.35. A cubic yard of gravel weighs roughly 2,600 to 3,000 pounds depending on the material and moisture."}},
+    {"@type":"Question","name":"How much gravel do I need for a driveway?","acceptedAnswer":{"@type":"Answer","text":"Multiply length by width in feet, then by depth in feet, and divide by 27 for cubic yards. A driveway is usually 4 to 6 inches of gravel, often over a coarser base layer. A 12 by 40 foot driveway at 4 inches needs about 5.9 cubic yards, or roughly 8 tons."}},
+    {"@type":"Question","name":"How deep should gravel be for a driveway?","acceptedAnswer":{"@type":"Answer","text":"Plan for 4 to 6 inches of surface gravel. For a new driveway on soft ground, build it in layers: a 4 inch base of larger crushed stone, then 3 to 4 inches of a finer top such as crusher run, for a total depth of 8 to 10 inches."}},
+    {"@type":"Question","name":"How much area does a ton of gravel cover?","acceptedAnswer":{"@type":"Answer","text":"About 100 square feet at 2 inches deep, 65 to 70 square feet at 3 inches, or 50 square feet at 4 inches. Coverage drops as depth increases, since a ton is a fixed weight of about 0.7 cubic yards."}},
+    {"@type":"Question","name":"Is gravel sold by the ton or the yard?","acceptedAnswer":{"@type":"Answer","text":"Bulk gravel is usually sold by the ton at the quarry and by the cubic yard at landscape suppliers. This calculator shows both so you can compare quotes; converting between them depends on the material's density."}}
+  ]
+}`;
+---
+<Base title={title} description={description} active="gravel" jsonLd={jsonLd}>
+  <div class="crumb"><a href="/">Home</a> › <a href="/">Calculators</a> › Gravel</div>
+  <h1>Gravel Calculator</h1>
+  <p style="font-size:17px;color:var(--ink-2);max-width:64ch">Enter your area and depth, choose your material, and get the exact cubic yards, the weight in tons, and a cost estimate — so you can order bulk gravel without guessing or over-paying.</p>
+
+  <div class="calc">
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-shape="rect" role="tab">Rectangle</button>
+      <button class="tab" data-shape="circle" role="tab">Circle</button>
+      <button class="tab" data-shape="triangle" role="tab">Triangle</button>
+    </div>
+    <div class="cbody">
+      <div class="inputs">
+        <div class="grp on" data-grp="rect">
+          <div class="two">
+            <div class="field"><label>Length (ft)</label><input type="number" id="r_l" value="40" min="0" step="0.5"></div>
+            <div class="field"><label>Width (ft)</label><input type="number" id="r_w" value="12" min="0" step="0.5"></div>
+          </div>
+        </div>
+        <div class="grp" data-grp="circle">
+          <div class="field"><label>Diameter (ft)</label><input type="number" id="c_d" value="15" min="0" step="0.5"></div>
+        </div>
+        <div class="grp" data-grp="triangle">
+          <div class="two">
+            <div class="field"><label>Base (ft)</label><input type="number" id="t_b" value="20" min="0" step="0.5"></div>
+            <div class="field"><label>Height (ft)</label><input type="number" id="t_h" value="12" min="0" step="0.5"></div>
+          </div>
+        </div>
+
+        <div class="field"><label>Depth (inches)</label><input type="number" id="depth" value="4" min="0" step="0.5">
+          <div class="hint">Driveways 4–6″ · walkways 2–3″ · paver base 4–6″ · drainage 2″.</div></div>
+
+        <div class="opts">
+          <div class="field"><label>Material</label>
+            <select id="mat">
+              <option value="1.40">Crushed stone / #57 gravel (1.40 t/yd³)</option>
+              <option value="1.40">Pea gravel (1.40 t/yd³)</option>
+              <option value="1.50">Crusher run / road base (1.50 t/yd³)</option>
+              <option value="1.50">Paver base, crushed (1.50 t/yd³)</option>
+              <option value="1.35">River rock (1.35 t/yd³)</option>
+              <option value="1.35">Sand (1.35 t/yd³)</option>
+            </select>
+          </div>
+          <div class="field"><label>Overage <span id="wv" style="color:var(--hivis);font-family:var(--mono)">10%</span></label>
+            <input type="range" id="waste" min="0" max="20" step="1" value="10"></div>
+          <div class="two">
+            <div class="field"><label>Price / ton ($)</label><input type="number" id="pt" value="45" min="0" step="1"></div>
+            <div class="field"><label>Price / yd³ ($)</label><input type="number" id="py" value="60" min="0" step="1"></div>
+          </div>
+          <div class="hint">Bulk prices vary a lot by material and region — update for your quote.</div>
+        </div>
+      </div>
+
+      <div class="stamp">
+        <div class="tick">▹ Delivery Ticket</div>
+        <div class="big">
+          <div class="m"><div class="v" id="r_yd">—</div><div class="k">Cubic yards</div></div>
+          <div class="m"><div class="v" id="r_tons">—</div><div class="k">Weight (tons)</div></div>
+        </div>
+        <div class="sub" id="r_sub">enter dimensions</div>
+        <div class="divider"></div>
+        <div class="costs">
+          <div style="flex:1"><div class="k">By the ton</div><div class="v" id="r_ct">—</div></div>
+          <div style="flex:1"><div class="k">By the yard</div><div class="v" id="r_cy">—</div></div>
+        </div>
+        <div class="rec" id="r_rec">—</div>
+      </div>
+    </div>
+  </div>
+  <p class="hint" style="margin-top:0">Weight uses the selected material's density and includes your overage. Bulk gravel settles and compacts, so ordering 5–10% extra is normal.</p>
+
+  <div class="cta">
+    <div><div class="t">Need it delivered?</div><div class="s">Compare bulk gravel & driveway stone quotes from local suppliers — free.</div></div>
+    <a href="/" rel="nofollow sponsored">Get quotes →</a>
+  </div>
+
+  <div class="slot">Ad slot · in-content responsive unit</div>
+
+  <h2>How much gravel do I need?</h2>
+  <p>Gravel is figured by volume — area times depth — and then usually <strong>bought by weight</strong>, which is where it differs from concrete. Suppliers quote either cubic yards or tons, so the calculator gives you both plus the cost each way. The one number that quietly controls everything is <strong>depth</strong>: a driveway at 4 inches needs twice the gravel of a 2-inch walkway over the same area, so nail that down first.</p>
+
+  <h2>How to measure your area</h2>
+  <p>Measure length and width in feet for a rectangle; for round areas use the diameter, and for odd shapes break them into rectangles and triangles and add them up. Then pick your depth in inches. Two things to keep in mind:</p>
+  <ul>
+    <li><strong>Order by the ton for anything bulk.</strong> A pickup bed holds only about 1 ton safely, so a real driveway means delivery — and delivery is priced by the ton at most quarries.</li>
+    <li><strong>Account for compaction.</strong> Gravel is delivered loose and settles once it's spread and driven on. The overage slider covers this; 10% is a sensible default, more for a soft or uneven base.</li>
+  </ul>
+
+  <div class="note"><b>Worked example — a gravel driveway.</b> A 40 ft × 12 ft driveway at 4 inches = 480 sq ft × 0.333 ft = 160 ft³ = <b>5.93 cubic yards</b>. In crushed stone (1.40 t/yd³) that's about <b>8.3 tons</b>. Add 10% overage and you'd order roughly <b>6.5 yd³ / 9 tons</b>.</div>
+
+  <div class="slot">Ad slot · in-content responsive unit</div>
+
+  <h2>Tons or cubic yards? (the density part)</h2>
+  <p>This trips people up because gravel is sold both ways and the conversion isn't fixed — it depends on the material's density. As a rule of thumb, <strong>one cubic yard is about 1.4 tons</strong> for common crushed stone and pea gravel. Heavier, denser materials weigh more:</p>
+  <table>
+    <thead><tr><th>Material</th><th>Tons / yd³</th><th>Approx lb / yd³</th></tr></thead>
+    <tbody>
+      <tr><td>Crushed stone (#57)</td><td>1.40</td><td>2,800</td></tr>
+      <tr><td>Pea gravel</td><td>1.40</td><td>2,800</td></tr>
+      <tr><td>Crusher run / road base</td><td>1.50</td><td>3,000</td></tr>
+      <tr><td>Paver base (crushed)</td><td>1.50</td><td>3,000</td></tr>
+      <tr><td>River rock</td><td>1.35</td><td>2,700</td></tr>
+      <tr><td>Sand</td><td>1.35</td><td>2,700</td></tr>
+    </tbody>
+  </table>
+  <p class="hint">Values are dry-weight averages; wet material weighs more. When a supplier quotes tons and another quotes yards, this is how you compare them apples-to-apples.</p>
+
+  <h2>Gravel coverage by depth</h2>
+  <p>How far one cubic yard spreads depends entirely on depth:</p>
+  <table>
+    <thead><tr><th>Depth</th><th>1 yd³ covers</th><th>1 ton covers*</th></tr></thead>
+    <tbody>
+      <tr><td>2 inches</td><td>162 sq ft</td><td>~115 sq ft</td></tr>
+      <tr><td>3 inches</td><td>108 sq ft</td><td>~77 sq ft</td></tr>
+      <tr><td>4 inches</td><td>81 sq ft</td><td>~58 sq ft</td></tr>
+      <tr><td>6 inches</td><td>54 sq ft</td><td>~39 sq ft</td></tr>
+    </tbody>
+  </table>
+  <p class="hint">*Assuming ~1.4 tons per cubic yard. Denser material covers slightly less per ton.</p>
+
+  <h2>What gravel costs</h2>
+  <p>Bulk gravel typically runs about <strong>$30–$60 per ton</strong> or <strong>$40–$80 per cubic yard</strong> at the supplier, based on average US supplier pricing, before delivery. Decorative stone (river rock, colored gravel) usually costs more; plain crusher run is typically the cheapest. Delivery is usually a flat trip fee plus a per-ton rate, so bigger single orders are cheaper per ton. For a full driveway installed — grading, base, and gravel — expect a contractor quote rather than a material-only figure, which is what the "get quotes" option above is for.</p>
+  <p class="hint">Prices reviewed {PRICES_REVIEWED} — costs vary by region, supplier, and season.</p>
+
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many tons of gravel are in a cubic yard?</summary><p>About 1.4 tons for most crushed stone and pea gravel. Denser materials like crusher run and paver base are closer to 1.5 tons per yard, and sand is around 1.35. In pounds, a cubic yard runs roughly 2,600–3,000 lb depending on material and moisture.</p></details>
+  <details><summary>How much gravel do I need for a driveway?</summary><p>Multiply length × width × depth (all in feet) and divide by 27 for cubic yards. Driveways are usually 4–6 inches of gravel. A 12 × 40 ft driveway at 4 inches needs about 5.9 cubic yards — roughly 8 tons of crushed stone.</p></details>
+  <details><summary>How deep should gravel be for a driveway?</summary><p>Aim for 4–6 inches of surface gravel. On soft ground, build in layers: a 4-inch base of larger stone, then 3–4 inches of finer crusher run on top, for 8–10 inches total.</p></details>
+  <details><summary>How much area does a ton of gravel cover?</summary><p>Roughly 100 sq ft at 2 inches, 65–70 sq ft at 3 inches, or 50 sq ft at 4 inches. A ton is about 0.7 cubic yards, so coverage falls as depth rises.</p></details>
+  <details><summary>How much gravel do I need for a paver base?</summary><p>A paver base is typically 4–6 inches of compacted crusher run or road base under 1 inch of bedding sand. Use the calculator with "paver base" selected and a 4–6 inch depth for the stone layer, then figure the sand separately.</p></details>
+
+  <aside slot="aside">
+    <div class="slot">Ad slot · sidebar 300×250</div>
+    <div class="slot tall">Ad slot · sticky 300×600</div>
+  </aside>
+
+  <script is:inline>
+(function(){
+  "use strict";
+  var shape="rect";
+  var $=function(id){return document.getElementById(id);};
+  var n=function(id){var v=parseFloat($(id).value);return isFinite(v)&&v>0?v:0;};
+
+  function areaFt2(){
+    if(shape==="rect")     return n("r_l")*n("r_w");
+    if(shape==="circle"){  var r=n("c_d")/2; return Math.PI*r*r; }
+    if(shape==="triangle") return n("t_b")*n("t_h")/2;
+    return 0;
+  }
+  function money(x){return "$"+Math.round(x).toLocaleString("en-US");}
+
+  function calc(){
+    var waste=parseFloat($("waste").value)||0;
+    $("wv").textContent=waste+"%";
+    var ft3=areaFt2()*(n("depth")/12)*(1+waste/100);
+    var yd3=ft3/27;
+    var density=parseFloat($("mat").value);
+    var tons=yd3*density;
+
+    if(!(yd3>0)){
+      $("r_yd").textContent="—";$("r_tons").textContent="—";
+      $("r_sub").textContent="enter dimensions";
+      $("r_ct").textContent="—";$("r_cy").textContent="—";
+      $("r_rec").textContent="Enter your area and depth to see the estimate.";
+      return;
+    }
+    $("r_yd").innerHTML=yd3.toFixed(2);
+    $("r_tons").innerHTML=tons.toFixed(1);
+    $("r_sub").textContent=ft3.toFixed(0)+" ft³  ·  "+Math.round(tons*2000).toLocaleString()+" lb  ·  incl. "+waste+"% overage";
+    $("r_ct").textContent=money(tons*n("pt"));
+    $("r_cy").textContent=money(yd3*n("py"));
+
+    var rec;
+    if(tons<1) rec="Under 1 ton — a bagged or single pickup load works; bulk delivery isn't worth the trip fee.";
+    else if(tons<7) rec="A small bulk load. Ask about the delivery minimum and per-ton rate.";
+    else rec="A full delivery load ("+tons.toFixed(0)+" tons). Order bulk by the ton and compare a couple of supplier quotes.";
+    $("r_rec").textContent=rec;
+  }
+
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("on");});
+      t.classList.add("on");shape=t.getAttribute("data-shape");
+      document.querySelectorAll(".grp").forEach(function(g){g.classList.toggle("on",g.getAttribute("data-grp")===shape);});
+      calc();
+    });
+  });
+  document.querySelectorAll("input,select").forEach(function(el){el.addEventListener("input",calc);});
+  calc();
+})();
+  </script>
+</Base>

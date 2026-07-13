@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mulch Calculator — How Much Mulch Do I Need? (Bags & Yards)</title>
+<meta name="description" content="Free mulch calculator: enter your bed area and depth to get cubic yards, the number of bags, pallets, and cost. Find out how much mulch you need for flower beds and landscaping.">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"How many bags of mulch are in a yard?","acceptedAnswer":{"@type":"Answer","text":"About 13.5 bags if you use standard 2 cubic foot bags, since a cubic yard is 27 cubic feet. Round up to 14 bags. For 3 cubic foot bags it takes 9 bags to equal one cubic yard."}},
+    {"@type":"Question","name":"How much mulch do I need?","acceptedAnswer":{"@type":"Answer","text":"Measure your bed length by width in feet, multiply by depth in feet, and divide by 27 for cubic yards. Most beds want 2 to 3 inches of mulch. A 200 square foot bed at 3 inches needs about 1.85 cubic yards, or 25 two-cubic-foot bags."}},
+    {"@type":"Question","name":"How deep should mulch be?","acceptedAnswer":{"@type":"Answer","text":"2 to 3 inches is ideal for most beds. Use 3 to 4 inches for new beds or heavy weed suppression, but avoid piling mulch against stems and trunks. Deeper than 4 inches can suffocate roots and hold too much moisture."}},
+    {"@type":"Question","name":"How many bags of mulch are on a pallet?","acceptedAnswer":{"@type":"Answer","text":"A pallet of 2 cubic foot bags usually holds about 65 bags, which is roughly 4.8 cubic yards, though it varies by brand and mulch type. Once you need more than a pallet or two, bulk delivery is normally cheaper."}},
+    {"@type":"Question","name":"How much does a yard of mulch cover?","acceptedAnswer":{"@type":"Answer","text":"One cubic yard covers about 108 square feet at 3 inches deep, 162 square feet at 2 inches, or 81 square feet at 4 inches. Coverage drops as depth increases."}}
+  ]
+}
+</script>
+<style>
+  :root{
+    --paper:#F5F6F8;--surface:#FFFFFF;
+    --ink:#14273F;--ink-2:#5A6B80;--ink-3:#8794A4;
+    --line:#DCE0E7;--line-2:#C7CDD6;
+    --blue:#1E5AA8;--blue-soft:#EAF1FA;
+    --hivis:#E85D25;--hivis-2:#c9500f;--hivis-soft:#FCEBE2;
+    --ok:#2E7D5B;
+    --mono:ui-monospace,"SF Mono","Cascadia Code","JetBrains Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .page{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 300px;gap:34px}
+  main{min-width:0;padding:22px 0 60px}
+  aside{padding-top:22px}
+  @media(max-width:900px){.page{grid-template-columns:1fr}aside{display:none}}
+  a{color:var(--blue)}
+  h1,h2,h3{line-height:1.2;letter-spacing:-.015em}
+  h1{font-size:30px;margin:.2em 0 .1em}
+  h2{font-size:22px;margin:2em 0 .5em}
+
+  .topbar{border-bottom:1px solid var(--line);background:var(--surface)}
+  .topbar .inner{max-width:1120px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.01em}
+  .brand .mark{width:22px;height:22px;border-radius:5px;background:var(--hivis);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:12px;font-weight:800}
+  .topbar nav{display:flex;gap:15px;font-size:14px;margin-left:6px}
+  .topbar nav a{color:var(--ink-2);text-decoration:none}
+  .topbar nav a.on{color:var(--hivis);font-weight:600}
+  .topbar nav a:hover{color:var(--hivis)}
+  .crumb{font-size:12.5px;color:var(--ink-3);margin:16px 0 2px}
+  .crumb a{color:var(--ink-3);text-decoration:none}
+
+  .calc{background:var(--surface);border:1px solid var(--line-2);border-radius:10px;overflow:hidden;margin:14px 0 6px;box-shadow:0 1px 2px rgba(20,39,63,.04)}
+  .tabs{display:flex;border-bottom:1px solid var(--line-2);background:var(--paper)}
+  .tab{flex:1;font-size:14px;font-weight:600;padding:12px 6px;text-align:center;cursor:pointer;border:0;background:none;color:var(--ink-2);border-right:1px solid var(--line)}
+  .tab:last-child{border-right:0}
+  .tab.on{background:var(--surface);color:var(--hivis);box-shadow:inset 0 -2px 0 var(--hivis)}
+  .cbody{display:grid;grid-template-columns:1fr 290px}
+  @media(max-width:680px){.cbody{grid-template-columns:1fr}}
+  .inputs{padding:20px 22px}
+  .grp{display:none}.grp.on{display:block}
+  .field{margin-bottom:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);font-weight:600;margin-bottom:5px}
+  .field input,.field select{font-family:var(--mono);font-size:16px;padding:10px 11px;border:1.5px solid var(--line-2);border-radius:6px;background:#fff;color:var(--ink);width:100%;outline:none}
+  .field input:focus,.field select:focus{border-color:var(--hivis)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opts{border-top:1px dashed var(--line-2);margin-top:4px;padding-top:14px}
+  .hint{font-size:12.5px;color:var(--ink-3);margin-top:4px}
+  input[type=range]{padding:0;accent-color:var(--hivis)}
+
+  .stamp{background:var(--ink);color:#fff;padding:22px 20px;display:flex;flex-direction:column;justify-content:center;position:relative}
+  .stamp::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:repeating-linear-gradient(45deg,var(--hivis) 0 12px,#14273F 12px 24px)}
+  .stamp .tick{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--hivis);font-weight:700}
+  .stamp .big{display:flex;gap:18px;margin:10px 0 2px}
+  .stamp .big .m{flex:1}
+  .stamp .big .v{font-size:34px;font-weight:800;line-height:1;font-family:var(--sans)}
+  .stamp .big .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8ea0b6;margin-top:5px}
+  .stamp .sub{font-family:var(--mono);font-size:12.5px;color:#aebccd;margin-top:4px}
+  .stamp .divider{height:1px;background:#28374a;margin:14px 0}
+  .stamp .costs{display:flex;gap:16px}
+  .stamp .costs .k{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#8ea0b6}
+  .stamp .costs .v{font-family:var(--mono);font-size:16px;font-weight:600;margin-top:2px}
+  .stamp .rec{margin-top:14px;font-size:12.5px;background:#1c2f45;border-left:3px solid var(--hivis);padding:8px 10px;color:#dbe4ee}
+
+  .slot{border:1.5px dashed var(--line-2);border-radius:8px;padding:14px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin:20px 0;background:rgba(20,39,63,.015)}
+  aside .slot{min-height:250px;display:flex;align-items:center;justify-content:center}
+  aside .slot.tall{min-height:600px;margin-top:20px}
+
+  .cta{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:var(--blue-soft);border:1px solid #cfe0f4;border-radius:10px;padding:16px 18px;margin:20px 0}
+  .cta.affiliate{background:var(--hivis-soft);border-color:#f6d3c2}
+  .cta .t{font-weight:700;font-size:16px}
+  .cta .s{font-size:13px;color:var(--ink-2);margin-top:1px}
+  .cta a{background:var(--hivis);color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 18px;border-radius:6px;white-space:nowrap}
+  .cta a:hover{background:var(--hivis-2)}
+
+  .note{background:var(--surface);border-left:4px solid var(--hivis);padding:11px 15px;margin:15px 0;font-size:14.5px;border-radius:0 6px 6px 0}
+
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--surface)}
+  th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper);color:var(--ink-2)}
+  td{font-family:var(--mono)}td:first-child{font-family:var(--sans)}
+  tbody tr:hover{background:var(--blue-soft)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{font-weight:600;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--hivis);font-size:20px;font-family:var(--mono)}
+  details[open] summary::after{content:"–"}
+  details p{font-size:14.5px;margin:8px 0 2px}
+
+  footer{border-top:1px solid var(--line);background:var(--surface);margin-top:40px}
+  footer .inner{max-width:1120px;margin:0 auto;padding:22px 20px;font-size:13px;color:var(--ink-2)}
+  footer nav{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+  footer nav a{color:var(--ink-2);text-decoration:none}
+  footer nav a:hover{color:var(--hivis)}
+  .disc{font-size:12px;color:var(--ink-3);line-height:1.5}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="inner">
+  <span class="brand"><span class="mark">M</span>MaterialCalc</span>
+  <nav>
+    <a href="#">Concrete</a><a href="#">Gravel</a>
+    <a href="#" class="on">Mulch</a>
+    <a href="#">Topsoil</a><a href="#">Pavers</a>
+  </nav>
+</div></div>
+
+<div class="page">
+<main>
+  <div class="crumb"><a href="#">Home</a> › <a href="#">Calculators</a> › Mulch</div>
+  <h1>Mulch Calculator</h1>
+  <p style="font-size:17px;color:var(--ink-2);max-width:64ch">Enter your bed size and depth to see exactly how much mulch you need — in cubic yards, bags, and pallets — plus which is cheaper for your job.</p>
+
+  <div class="calc">
+    <div class="tabs" role="tablist">
+      <button class="tab on" data-shape="rect" role="tab">Rectangle</button>
+      <button class="tab" data-shape="circle" role="tab">Circle</button>
+      <button class="tab" data-shape="triangle" role="tab">Triangle</button>
+    </div>
+    <div class="cbody">
+      <div class="inputs">
+        <div class="grp on" data-grp="rect">
+          <div class="two">
+            <div class="field"><label>Length (ft)</label><input type="number" id="r_l" value="20" min="0" step="0.5"></div>
+            <div class="field"><label>Width (ft)</label><input type="number" id="r_w" value="15" min="0" step="0.5"></div>
+          </div>
+        </div>
+        <div class="grp" data-grp="circle">
+          <div class="field"><label>Diameter (ft)</label><input type="number" id="c_d" value="12" min="0" step="0.5"></div>
+        </div>
+        <div class="grp" data-grp="triangle">
+          <div class="two">
+            <div class="field"><label>Base (ft)</label><input type="number" id="t_b" value="16" min="0" step="0.5"></div>
+            <div class="field"><label>Height (ft)</label><input type="number" id="t_h" value="10" min="0" step="0.5"></div>
+          </div>
+        </div>
+
+        <div class="field"><label>Depth (inches)</label><input type="number" id="depth" value="3" min="0" step="0.5">
+          <div class="hint">2–3″ for most beds · 3–4″ for new beds or weed control · avoid piling on stems.</div></div>
+
+        <div class="opts">
+          <div class="field"><label>Bag size</label>
+            <select id="bag">
+              <option value="2">2 cubic feet (standard)</option>
+              <option value="3">3 cubic feet</option>
+            </select>
+          </div>
+          <div class="field"><label>Overage <span id="wv" style="color:var(--hivis);font-family:var(--mono)">10%</span></label>
+            <input type="range" id="waste" min="0" max="20" step="1" value="10"></div>
+          <div class="two">
+            <div class="field"><label>Price / bag ($)</label><input type="number" id="pb" value="4" min="0" step="0.5"></div>
+            <div class="field"><label>Bulk price / yd³ ($)</label><input type="number" id="py" value="40" min="0" step="1"></div>
+          </div>
+          <div class="hint">Prices vary by mulch type — dyed, hardwood, and cypress differ. Update for your store.</div>
+        </div>
+      </div>
+
+      <div class="stamp">
+        <div class="tick">▹ Mulch Order</div>
+        <div class="big">
+          <div class="m"><div class="v" id="r_yd">—</div><div class="k">Cubic yards</div></div>
+          <div class="m"><div class="v" id="r_bags">—</div><div class="k" id="r_bagk">2 ft³ bags</div></div>
+        </div>
+        <div class="sub" id="r_sub">enter bed size</div>
+        <div class="divider"></div>
+        <div class="costs">
+          <div style="flex:1"><div class="k">By the bag</div><div class="v" id="r_cb">—</div></div>
+          <div style="flex:1"><div class="k">Bulk / yard</div><div class="v" id="r_cy">—</div></div>
+        </div>
+        <div class="rec" id="r_rec">—</div>
+      </div>
+    </div>
+  </div>
+  <p class="hint" style="margin-top:0">Bags are rounded up and include your overage. Mulch settles, so a little extra is normal — and it's better than a second trip to the store.</p>
+
+  <div class="cta affiliate">
+    <div><div class="t">Buying by the bag?</div><div class="s">Compare mulch prices and colors at Home Depot, Lowe's & Amazon.</div></div>
+    <a href="#" rel="nofollow sponsored">Compare prices →</a>
+  </div>
+
+  <div class="slot">Ad slot · in-content responsive unit</div>
+
+  <h2>How much mulch do I need?</h2>
+  <p>Mulch is figured the same way as any ground cover — bed area times depth — but unlike gravel it's light, so it's sold by <strong>volume</strong>, not weight. The two ways to buy it are bulk (by the cubic yard, delivered in a pile) or bagged (usually 2 cubic foot bags), and the calculator gives you both counts plus the cost each way so you can see where the crossover is. Depth is the lever that matters most: 2 inches versus 3 inches is a 50% difference in how much you buy.</p>
+
+  <h2>How to measure your beds</h2>
+  <p>Measure each bed's length and width in feet — for curved or island beds, approximate with a rectangle, circle, or triangle and add them together. Then choose your depth. A couple of practical notes:</p>
+  <ul>
+    <li><strong>Refreshing vs. new.</strong> Topping up existing mulch usually needs only 1–2 inches. A brand-new bed, or one where you want real weed suppression, wants 3 inches.</li>
+    <li><strong>Don't overdo depth.</strong> More than 3–4 inches, or mulch piled against stems and trunks ("volcano mulching"), traps moisture and can harm plants. Deeper isn't better here.</li>
+  </ul>
+
+  <div class="note"><b>Worked example.</b> Beds totaling 200 sq ft at 3 inches = 200 × 0.25 ft = 50 ft³ = <b>1.85 cubic yards</b>, or about <b>25 two-cubic-foot bags</b>. Add 10% and you'd grab ~28 bags — or order 2 yards bulk, which at typical prices is cheaper at this size.</div>
+
+  <h2>Bags, pallets, or bulk?</h2>
+  <p>This is the real decision, and the calculator flags it. Bagged mulch is convenient and clean for small jobs; bulk is cheaper per yard once you need a lot. The rough guide:</p>
+  <ul>
+    <li><strong>Under ~1.5 cubic yards</strong> (about 20 bags) — buy bags. No delivery fee, easy to handle, and you only open what you need.</li>
+    <li><strong>Around 1.5–3 yards</strong> — compare. A pallet of bags (~65 bags ≈ 4.8 yd³) or a bulk delivery both work; bulk usually edges ahead on price.</li>
+    <li><strong>Over ~3 yards</strong> — order bulk. It's noticeably cheaper by volume and one dumped pile beats hauling and splitting 40+ bags.</li>
+  </ul>
+
+  <div class="slot">Ad slot · in-content responsive unit</div>
+
+  <h2>Mulch coverage by depth</h2>
+  <p>How far mulch spreads depends entirely on depth:</p>
+  <table>
+    <thead><tr><th>Depth</th><th>1 yd³ covers</th><th>2 ft³ bag covers</th></tr></thead>
+    <tbody>
+      <tr><td>2 inches</td><td>162 sq ft</td><td>12 sq ft</td></tr>
+      <tr><td>3 inches</td><td>108 sq ft</td><td>8 sq ft</td></tr>
+      <tr><td>4 inches</td><td>81 sq ft</td><td>6 sq ft</td></tr>
+    </tbody>
+  </table>
+  <p class="hint">A cubic yard = 27 ft³, so it takes about <strong>13.5 standard 2 ft³ bags to equal one cubic yard</strong> (round up to 14). A pallet is usually ~65 bags, roughly 4.8 cubic yards.</p>
+
+  <h2>What mulch costs</h2>
+  <p>Bagged mulch typically runs <strong>$3–$5 per 2 cubic foot bag</strong>, so a cubic yard in bags is roughly $40–$70. Bulk mulch is usually <strong>$30–$45 per cubic yard</strong> plus a delivery fee, which is why bulk wins on larger jobs. Dyed and premium mulches (cypress, cedar) cost more than plain hardwood. The calculator estimates material only; delivery and spreading, if you hire it out, are separate.</p>
+
+  <h2>Frequently asked questions</h2>
+  <details><summary>How many bags of mulch are in a yard?</summary><p>About 13.5 standard 2 cubic foot bags, since a cubic yard is 27 cubic feet — round up to 14. If you're using 3 cubic foot bags, it takes 9 to make a cubic yard.</p></details>
+  <details><summary>How much mulch do I need?</summary><p>Multiply bed length × width × depth in feet and divide by 27 for cubic yards. Most beds want 2–3 inches. A 200 sq ft bed at 3 inches needs about 1.85 cubic yards, or 25 two-cubic-foot bags.</p></details>
+  <details><summary>How deep should mulch be?</summary><p>2–3 inches is ideal for most beds; 3–4 inches for new beds or heavy weed suppression. Keep mulch off stems and trunks, and don't exceed about 4 inches — deeper can suffocate roots and hold too much moisture.</p></details>
+  <details><summary>How many bags of mulch are on a pallet?</summary><p>Usually about 65 two-cubic-foot bags, which is roughly 4.8 cubic yards, though it varies by brand and mulch type. Past a pallet or two, bulk delivery is normally cheaper.</p></details>
+  <details><summary>Is bagged or bulk mulch cheaper?</summary><p>Bulk is cheaper per yard once you need more than about 1.5–2 cubic yards, even with a delivery fee. For small beds, bags win because there's no delivery cost and no leftover pile.</p></details>
+</main>
+
+<aside>
+  <div class="slot">Ad slot · sidebar 300×250</div>
+  <div class="slot tall">Ad slot · sticky 300×600</div>
+</aside>
+</div>
+
+<footer><div class="inner">
+  <nav><a href="#">About</a><a href="#">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms</a><a href="#">Disclaimer</a></nav>
+  <p class="disc">MaterialCalc provides estimates for planning only. Mulch coverage varies with material, settling, and how finely it's shredded; confirm quantities and pricing with your supplier before ordering. Cost figures are rough averages that vary by region and season. This page may contain affiliate or sponsored links, which don't change what you pay.</p>
+</div></footer>
+
+<script>
+(function(){
+  "use strict";
+  var shape="rect";
+  var $=function(id){return document.getElementById(id);};
+  var n=function(id){var v=parseFloat($(id).value);return isFinite(v)&&v>0?v:0;};
+  var BAGS_PER_PALLET=65;
+
+  function areaFt2(){
+    if(shape==="rect")     return n("r_l")*n("r_w");
+    if(shape==="circle"){  var r=n("c_d")/2; return Math.PI*r*r; }
+    if(shape==="triangle") return n("t_b")*n("t_h")/2;
+    return 0;
+  }
+  function money(x){return "$"+Math.round(x).toLocaleString("en-US");}
+
+  function calc(){
+    var waste=parseFloat($("waste").value)||0;
+    $("wv").textContent=waste+"%";
+    var ft3=areaFt2()*(n("depth")/12)*(1+waste/100);
+    var yd3=ft3/27;
+    var bagSize=parseFloat($("bag").value);
+    var bags=ft3>0?Math.ceil(ft3/bagSize):0;
+    $("r_bagk").textContent=bagSize+" ft³ bags";
+
+    if(!(yd3>0)){
+      $("r_yd").textContent="—";$("r_bags").textContent="—";
+      $("r_sub").textContent="enter bed size";
+      $("r_cb").textContent="—";$("r_cy").textContent="—";
+      $("r_rec").textContent="Enter your bed size and depth to see the estimate.";
+      return;
+    }
+    $("r_yd").textContent=yd3.toFixed(2);
+    $("r_bags").textContent=bags;
+
+    var sub=ft3.toFixed(0)+" ft³  ·  incl. "+waste+"% overage";
+    if(bags>=BAGS_PER_PALLET){ sub+="  ·  ≈ "+(bags/BAGS_PER_PALLET).toFixed(1)+" pallets"; }
+    $("r_sub").textContent=sub;
+
+    $("r_cb").textContent=money(bags*n("pb"));
+    $("r_cy").textContent=money(yd3*n("py"));
+
+    var rec;
+    if(yd3<1.5) rec="Small job ("+bags+" bags) — buy bags; no delivery fee and easy to handle.";
+    else if(yd3<3) rec="Middle ground — compare a pallet of bags against a bulk delivery; bulk usually wins on price.";
+    else rec=yd3.toFixed(1)+" yd³ — order bulk. Cheaper by volume than hauling "+bags+" bags.";
+    $("r_rec").textContent=rec;
+  }
+
+  document.querySelectorAll(".tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("on");});
+      t.classList.add("on");shape=t.getAttribute("data-shape");
+      document.querySelectorAll(".grp").forEach(function(g){g.classList.toggle("on",g.getAttribute("data-grp")===shape);});
+      calc();
+    });
+  });
+  document.querySelectorAll("input,select").forEach(function(el){el.addEventListener("input",calc);});
+  calc();
+})();
+</script>
+</body>
+</html>
