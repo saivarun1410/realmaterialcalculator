@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_NAME, SITE_URL } from '../consts.js';
+---
+<Base
+  title={`Something Went Wrong — ${SITE_NAME}`}
+  description={`${SITE_NAME} could not complete this request. Try again or return to a material calculator.`}
+  canonical={`${SITE_URL}/500`}
+  noindex
+>
+  <article class="prose">
+    <p class="meta"><strong>Error 500</strong></p>
+    <h1>Something went wrong</h1>
+
+    <p>We could not complete this request. The problem may be temporary, so try refreshing the page once. Calculator values are processed in your browser and do not require an account.</p>
+
+    <p>If the problem continues, return to the <a href="/">{SITE_NAME} homepage</a> or open a calculator directly:</p>
+
+    <ul>
+      <li><a href="/concrete-calculator">Concrete calculator</a></li>
+      <li><a href="/gravel-calculator">Gravel calculator</a></li>
+      <li><a href="/mulch-calculator">Mulch calculator</a></li>
+    </ul>
+
+    <p>You can also <a href="/contact">contact us</a> and include the page you were trying to use.</p>
+  </article>
+</Base>

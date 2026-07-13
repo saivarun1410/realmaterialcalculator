@@ -1,6 +1,6 @@
 // Single source of truth for brand, site identity, owner details, and contact delivery.
 export const SITE_CONFIG = Object.freeze({
-  SITE_NAME: 'MaterialCalc',
+  SITE_NAME: 'MaterialCalculator',
   OWNER_NAME: 'Sai Varun Thupakula',
   CONTACT_EMAIL: 'realmrealmaterialcalculator@support.com',
   LAST_UPDATED: 'July 2026',

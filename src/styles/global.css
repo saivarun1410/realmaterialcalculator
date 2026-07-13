@@ -1,5 +1,5 @@
 /* ============================================================
-   MaterialCalc — shared design system
+   MaterialCalculator — shared design system
    Extracted ONCE from the three calculator pages: the :root
    design tokens, base resets, page layout, and the unified
    shell (topbar nav + footer). Loaded on every page via Base.astro.
