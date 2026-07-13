@@ -9,6 +9,7 @@ export const SITE_CONFIG = Object.freeze({
   CONTACT_FORM_ENDPOINT: 'https://api.web3forms.com/submit',
   CONTACT_FORM_ACCESS_KEY: 'bbcdeab9-a765-4306-a839-d477f16a6f2e',
   CONTACT_FORM_SUCCESS_URL: 'https://web3forms.com/success',
+  ADS_ENABLED: false,
 });
 
 // Compatibility exports for existing calculator pages and Astro configuration.

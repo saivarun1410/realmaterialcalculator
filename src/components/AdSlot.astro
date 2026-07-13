@@ -1,0 +1,21 @@
+---
+import { SITE_CONFIG } from '../consts.js';
+
+interface Props {
+  placement: string;
+  format?: string;
+}
+
+const { placement, format = 'auto' } = Astro.props;
+---
+
+{SITE_CONFIG.ADS_ENABLED && (
+  <div
+    class="ad-slot"
+    data-ad-placement={placement}
+    data-ad-format={format}
+    aria-label="Advertisement"
+  >
+    <slot />
+  </div>
+)}
