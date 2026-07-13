@@ -44,13 +44,3 @@ Create a new Pages project pointing at this repository and use:
   if the default is older)
 
 No server or SSR is used — the build emits plain HTML/CSS/JS.
-
-## Before going live
-
-The canonical URLs and sitemap currently use the placeholder domain
-`https://REPLACE-WITH-DOMAIN.com`. Swap in the real domain in **two** places:
-
-1. `src/consts.js` → `SITE_URL` (drives canonical URLs, Open Graph URLs, and the sitemap)
-2. `public/robots.txt` → the `Sitemap:` line
-
-The brand name can be renamed in one place: `SITE_NAME` in `src/consts.js`.
