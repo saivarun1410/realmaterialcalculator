@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import cloudflare from '@astrojs/cloudflare';
 
 import { SITE_URL } from './src/consts.js';
 
@@ -16,8 +17,9 @@ const directSitemap = {
   },
 };
 
-// Static site (default output) — deployable to Cloudflare Pages via `npm run build` -> dist/.
+// Build for Cloudflare Workers, with static assets emitted to dist/.
 export default defineConfig({
   site: SITE_URL,
   integrations: [sitemap(), directSitemap],
+  adapter: cloudflare(),
 });
