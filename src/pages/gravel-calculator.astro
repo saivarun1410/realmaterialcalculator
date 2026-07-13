@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
 import { PRICES_REVIEWED } from '../consts.js';
 import '../styles/standard.css';
 
@@ -94,7 +95,7 @@ const jsonLd = `{
   </div>
   -->
 
-  <div class="slot">Ad slot · in-content responsive unit</div>
+  <AdSlot placement="gravel-in-content-primary" />
 
   <h2>How much gravel do I need?</h2>
   <p>Gravel is figured by volume — area times depth — and then usually <strong>bought by weight</strong>, which is where it differs from concrete. Suppliers quote either cubic yards or tons, so the calculator gives you both plus the cost each way. The one number that quietly controls everything is <strong>depth</strong>: a driveway at 4 inches needs twice the gravel of a 2-inch walkway over the same area, so nail that down first.</p>
@@ -108,7 +109,7 @@ const jsonLd = `{
 
   <div class="note"><b>Worked example — a gravel driveway.</b> A 40 ft × 12 ft driveway at 4 inches = 480 sq ft × 0.333 ft = 160 ft³ = <b>5.93 cubic yards</b>. In crushed stone (1.40 t/yd³) that's about <b>8.3 tons</b>. Add 10% overage and you'd order roughly <b>6.5 yd³ / 9 tons</b>.</div>
 
-  <div class="slot">Ad slot · in-content responsive unit</div>
+  <AdSlot placement="gravel-in-content-secondary" />
 
   <h2>Tons or cubic yards? (the density part)</h2>
   <p>This trips people up because gravel is sold both ways and the conversion isn't fixed — it depends on the material's density. As a rule of thumb, <strong>one cubic yard is about 1.4 tons</strong> for common crushed stone and pea gravel. Heavier, denser materials weigh more:</p>
@@ -150,8 +151,8 @@ const jsonLd = `{
   <details><summary>How much gravel do I need for a paver base?</summary><p>A paver base is typically 4–6 inches of compacted crusher run or road base under 1 inch of bedding sand. Use the calculator with "paver base" selected and a 4–6 inch depth for the stone layer, then figure the sand separately.</p></details>
 
   <aside slot="aside">
-    <div class="slot">Ad slot · sidebar 300×250</div>
-    <div class="slot tall">Ad slot · sticky 300×600</div>
+    <AdSlot placement="gravel-sidebar" format="rectangle" />
+    <AdSlot placement="gravel-sidebar-sticky" format="vertical" />
   </aside>
 
   <script is:inline>

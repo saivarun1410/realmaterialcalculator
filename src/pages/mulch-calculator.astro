@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
 import { PRICES_REVIEWED } from '../consts.js';
 import '../styles/standard.css';
 
@@ -90,7 +91,7 @@ const jsonLd = `{
   </div>
   -->
 
-  <div class="slot">Ad slot · in-content responsive unit</div>
+  <AdSlot placement="mulch-in-content-primary" />
 
   <h2>How much mulch do I need?</h2>
   <p>Mulch is figured the same way as any ground cover — bed area times depth — but unlike gravel it's light, so it's sold by <strong>volume</strong>, not weight. The two ways to buy it are bulk (by the cubic yard, delivered in a pile) or bagged (usually 2 cubic foot bags), and the calculator gives you both counts plus the cost each way so you can see where the crossover is. Depth is the lever that matters most: 2 inches versus 3 inches is a 50% difference in how much you buy.</p>
@@ -112,7 +113,7 @@ const jsonLd = `{
     <li><strong>Over ~3 yards</strong> — order bulk. It's noticeably cheaper by volume and one dumped pile beats hauling and splitting 40+ bags.</li>
   </ul>
 
-  <div class="slot">Ad slot · in-content responsive unit</div>
+  <AdSlot placement="mulch-in-content-secondary" />
 
   <h2>Mulch coverage by depth</h2>
   <p>How far mulch spreads depends entirely on depth:</p>
@@ -138,8 +139,8 @@ const jsonLd = `{
   <details><summary>Is bagged or bulk mulch cheaper?</summary><p>Bulk is cheaper per yard once you need more than about 1.5–2 cubic yards, even with a delivery fee. For small beds, bags win because there's no delivery cost and no leftover pile.</p></details>
 
   <aside slot="aside">
-    <div class="slot">Ad slot · sidebar 300×250</div>
-    <div class="slot tall">Ad slot · sticky 300×600</div>
+    <AdSlot placement="mulch-sidebar" format="rectangle" />
+    <AdSlot placement="mulch-sidebar-sticky" format="vertical" />
   </aside>
 
   <script is:inline>

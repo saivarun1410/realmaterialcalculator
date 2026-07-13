@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import AdSlot from '../components/AdSlot.astro';
 import { PRICES_REVIEWED } from '../consts.js';
 import '../styles/concrete.css';
 
@@ -81,8 +82,7 @@ const jsonLd = `{
   </div>
   -->
 
-  <!-- in-content ad slot: highest-value placement, right after the tool -->
-  <div class="slot"><span class="tag">◻ Ad slot — in-content (paste AdSense unit here)</span></div>
+  <AdSlot placement="concrete-in-content-primary" />
 
   <h2>How to measure for concrete</h2>
   <p>The calculator is only as accurate as your measurements, and concrete is unforgiving — you can't order "a bit more" once the truck leaves. Measure length and width in feet, and thickness in inches (most people get this wrong by mixing units). For a slab, thickness is the depth of the pour, not the depth of your excavation.</p>
@@ -105,8 +105,7 @@ const jsonLd = `{
   <p>The honest threshold is about <b>1 cubic yard</b>. Below it, bags win on convenience and there's no delivery minimum to worry about. Above it, ready-mix wins on both cost and effort — but watch for the <b>short-load fee</b>: most suppliers charge a premium on deliveries under 1 cubic yard, typically around $60–150, which can erase the savings on very small pours. So the awkward middle — roughly 0.7 to 1.5 cubic yards — is where you should price both.</p>
   <div class="note"><b>Rule of thumb:</b> under ~40 eighty-pound bags, buy bags. Over ~60, order ready-mix. In between, get a delivery quote including any short-load fee and compare.</div>
 
-  <!-- affiliate slot in-context -->
-  <div class="slot affiliate"><span class="tag">◻ Affiliate slot — "Compare concrete mix prices" (Home Depot / Lowe's / Amazon)</span></div>
+  <AdSlot placement="concrete-affiliate" format="affiliate" />
 
   <h2>Concrete coverage chart</h2>
   <p>How much area one bag covers depends entirely on thickness. These figures use standard bag yields (80 lb ≈ 0.60 cu ft, 60 lb ≈ 0.45 cu ft, 40 lb ≈ 0.30 cu ft):</p>
@@ -148,9 +147,8 @@ const jsonLd = `{
   <p class="disclaimer">This calculator provides estimates for planning only. Bag yields and prices vary by manufacturer and region; always confirm order quantities with your concrete supplier and follow local building codes for structural work.</p>
 
   <aside slot="aside"><div class="sticky">
-    <h4>◻ Ad slot — sidebar</h4>
-    <div class="slot" style="min-height:250px;display:flex;align-items:center;justify-content:center"><span class="tag">300 × 250</span></div>
-    <h4 style="margin-top:22px">Popular calculators</h4>
+    <AdSlot placement="concrete-sidebar" format="rectangle" />
+    <h4>Popular calculators</h4>
     <div class="related" style="grid-template-columns:1fr">
       <a href="/gravel-calculator"><div class="rt">Gravel →</div></a>
       <a href="/mulch-calculator"><div class="rt">Mulch →</div></a>
