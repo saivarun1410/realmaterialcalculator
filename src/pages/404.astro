@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_NAME, SITE_URL } from '../consts.js';
+---
+<Base
+  title={`Page Not Found — ${SITE_NAME}`}
+  description={`The requested page could not be found on ${SITE_NAME}. Return home or open a material calculator.`}
+  canonical={`${SITE_URL}/404`}
+  noindex
+>
+  <article class="prose">
+    <p class="meta"><strong>Error 404</strong></p>
+    <h1>Page not found</h1>
+
+    <p>The address may be mistyped, the page may have moved, or the link may be out of date. Nothing was submitted or changed.</p>
+
+    <p><a href="/">Return to the {SITE_NAME} homepage</a>, or continue with one of the current calculators:</p>
+
+    <ul>
+      <li><a href="/concrete-calculator">Concrete calculator</a> — cubic yards and bag counts</li>
+      <li><a href="/gravel-calculator">Gravel calculator</a> — cubic yards and tons</li>
+      <li><a href="/mulch-calculator">Mulch calculator</a> — yards, bags, and pallets</li>
+    </ul>
+
+    <p>If a link on this site brought you here, please <a href="/contact">let us know</a> so it can be corrected.</p>
+  </article>
+</Base>

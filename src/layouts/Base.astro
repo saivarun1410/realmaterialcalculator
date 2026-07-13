@@ -11,9 +11,11 @@ export interface Props {
   active?: string;
   /** Raw JSON-LD string injected verbatim into <head> (e.g. the page's FAQPage schema). */
   jsonLd?: string;
+  /** Prevent utility/error pages from appearing in search results. */
+  noindex?: boolean;
 }
 
-const { title, description, canonical, active, jsonLd } = Astro.props;
+const { title, description, canonical, active, jsonLd, noindex = false } = Astro.props;
 
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
 const hasAside = Astro.slots.has('aside');
@@ -39,6 +41,7 @@ const trustNav = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonicalURL} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 

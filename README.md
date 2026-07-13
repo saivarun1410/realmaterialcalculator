@@ -1,4 +1,4 @@
-# MaterialCalc
+# MaterialCalculator
 
 A fast, static multi-page site of material-estimation calculators (concrete, gravel, mulch),
 built with [Astro](https://astro.build/) and deployable to **Cloudflare Pages**.
