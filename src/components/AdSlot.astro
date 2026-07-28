@@ -1,21 +1,29 @@
 ---
-import { SITE_CONFIG } from '../consts.js';
+import { SITE_CONFIG, ADSENSE_SLOTS } from '../consts.js';
 
 interface Props {
+  /** Stable placement key; must match an entry in ADSENSE_SLOTS to render. */
   placement: string;
+  /** AdSense shape hint: auto | rectangle | vertical | horizontal. */
   format?: string;
 }
 
 const { placement, format = 'auto' } = Astro.props;
+
+const slotId = ADSENSE_SLOTS[placement] ?? '';
+const isLive = SITE_CONFIG.ADS_ENABLED && Boolean(SITE_CONFIG.ADSENSE_CLIENT) && Boolean(slotId);
 ---
 
-{SITE_CONFIG.ADS_ENABLED && (
-  <div
-    class="ad-slot"
-    data-ad-placement={placement}
-    data-ad-format={format}
-    aria-label="Advertisement"
-  >
-    <slot />
+{isLive && (
+  <div class="ad-slot" data-ad-placement={placement} data-ad-format={format} aria-label="Advertisement">
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={SITE_CONFIG.ADSENSE_CLIENT}
+      data-ad-slot={slotId}
+      data-ad-format={format}
+      data-full-width-responsive="true"
+    ></ins>
+    <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 )}
