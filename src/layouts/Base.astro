@@ -1,5 +1,5 @@
 ---
-import { SITE_NAME } from '../consts.js';
+import { SITE_NAME, SITE_CONFIG } from '../consts.js';
 import '../styles/global.css';
 
 export interface Props {
@@ -53,6 +53,15 @@ const trustNav = [
   <meta property="og:site_name" content={SITE_NAME} />
 
   {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
+
+  {SITE_CONFIG.ADSENSE_CLIENT && (
+    <script
+      is:inline
+      async
+      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${SITE_CONFIG.ADSENSE_CLIENT}`}
+      crossorigin="anonymous"
+    ></script>
+  )}
 </head>
 <body>
 

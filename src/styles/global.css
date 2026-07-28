@@ -66,6 +66,15 @@ aside { padding-top: 22px }
   aside { display: none }
 }
 
+/* ---------- ad slots ---------- */
+/* Space is reserved up front so a filled ad does not shift the page (CLS). */
+.ad-slot { margin: 26px 0; overflow: hidden }
+.ad-slot .adsbygoogle { min-height: 100px }
+aside .ad-slot { margin: 0 0 22px }
+aside .ad-slot .adsbygoogle { min-height: 250px }
+aside .ad-slot[data-ad-format="vertical"] { position: sticky; top: 22px }
+aside .ad-slot[data-ad-format="vertical"] .adsbygoogle { min-height: 600px }
+
 /* ---------- shell: topbar nav ---------- */
 .topbar { border-bottom: 1px solid var(--line); background: var(--surface) }
 .topbar .inner {
